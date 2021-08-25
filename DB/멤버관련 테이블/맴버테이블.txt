@@ -1,0 +1,9 @@
+create table member (
+id varchar2(10) PRIMARY KEY,
+password varchar2(20) not null,
+email varchar2(30) not null,
+nickname varchar2(10) not null,
+birthd varchar2(10),
+grade number(2) default 1,
+point number(10),
+rid varchar(10));

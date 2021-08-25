@@ -1,0 +1,4 @@
+set linesize 200set pagesize 200COLUMN id Format a10 ;COLUMN password Format a10 ;
+COLUMN email Format a10 ;
+COLUMN nickname Format a10 ;COLUMN birthd Format a10 ;
+COLUMN grade Format 999 ; COLUMN point Format 99999;COLUMN rid Format a10 ;COLUMN regdate Format a10 ;

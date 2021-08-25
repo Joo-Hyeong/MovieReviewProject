@@ -1,0 +1,41 @@
+set linesize 300
+set pagesize 300
+
+COLUMN movie_num Format 9999 
+COLUMN movie_title Format a30
+COLUMN director Format a20
+COLUMN release Format a10
+COLUMN posterfile Format a30
+COLUMN trailer Format a40
+COLUMN actor Format a20
+
+create table movie(
+movie_num number(4) NOT NULL,
+movie_title VARCHAR2(100) NOT NULL,
+director VARCHAR2(50) NOT NULL,
+release VARCHAR2(10) NOT NULL,
+posterfile VARCHAR2(100) NOT NULL,
+trailer VARCHAR2(200) NOT NULL,
+CONSTRAINT PK_MOVIE primary key(movie_num)
+);
+
+insert into movie values(1,'반지의 제왕: 반지 원정대','피터 잭슨','2002-01-01','resources/posterImage/1.jpg','https://youtu.be/z_WZxJpHzEE');
+insert into movie values(2,'반지의 제왕: 두개의 탑','피터 잭슨','2002-12-19','resources/posterImage/2.jpg','https://youtu.be/Y4neBR0h39c');
+insert into movie values(3,'반지의 제왕: 왕의 귀환','피터 잭슨','2003-12-17','resources/posterImage/3.jpg','https://youtu.be/KOQSQaGgJxs');
+
+create table actor(
+movie_num number(4) NOT NULL,
+actor VARCHAR2(50) NOT NULL,
+CONSTRAINT FK_ACTOR FOREIGN KEY(movie_num) REFERENCES movie(movie_num),
+CONSTRAINT PK_ACTOR primary key(movie_num, actor)
+);
+
+insert into actor values(1,'일라이저 우드'); 
+insert into actor values(1,'이안 맥켈런'); 
+insert into actor values(1,'비고 모텐슨'); 
+insert into actor values(2,'숀 애스틴'); 
+insert into actor values(2,'도미닉 모나한'); 
+insert into actor values(2,'빌리 보이드'); 
+insert into actor values(3,'숀 빈'); 
+insert into actor values(3,'올랜도 블룸'); 
+insert into actor values(3,'휴고 위빙'); 

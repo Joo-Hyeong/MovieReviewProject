@@ -1,0 +1,6 @@
+Create table actor(
+movie_num number(4) NOT NULL,
+actor VARCHAR2(10) NOT NULL,
+CONSTRAINT FK_ACTOR FOREIGN KEY(movie_num) REFERENCES movie(movie_num),
+CONSTRAINT PK_ACTOR primary key(movie_num, actor)
+);

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="green.mapper.ActorMapper">
+  		
+ 	
+  		<!-- ** totalRowCount ** -->
+  		<select id="totalRowCount" resultType="int">
+  			select count(*) from actor
+  		</select>	
+  		
+  		<!-- ** PageList ** -->
+  		<select id="pageList" resultType="VO.ActorVO">
+  		select movie_num,actor from(select a.*,row_number() over(order by actor asc)
+  		 rnum from actor a) where rnum between #{sno} and #{eno}
+  		 
+  		</select>
+  		
+  		<select id="selectList" resultType="VO.ActorVO">
+  		
+  			select * from actor order by actor asc
+  		</select>
+  		
+  		 <select id="selectOne" resultType="VO.ActorVO">
+  		
+  		<!-- #은 파라미터로 흘러들어오는 값 -->
+  			select * from actor where movie_num = #{movie_num} 
+  		</select>  	
+  			
+  		<insert id="insert" >
+  		
+  			insert into actor values(#{movie_num},#{actor})
+  
+  		</insert>  		
+  		
+  		<update id="update">
+  		update actor set movie_num=#{movie_num},actor=#{actor} where actor=#{actor} 
+  		</update>
+  		
+  		<delete id="delete">
+  		delete from actor where actor=#{actor}
+  		</delete>
+  </mapper>
