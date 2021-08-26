@@ -11,7 +11,9 @@ public interface MemberService {
 	
 
 	MemberVO selectOne(MemberVO vo);
-
+	
+	MemberVO searchNickname(MemberVO vo);
+	
 	int insert(MemberVO vo);
 
 	int update(MemberVO vo);

@@ -21,6 +21,11 @@ public class MemberServiceimpl implements MemberService {
 	}
 	
 	@Override
+	public MemberVO searchNickname(MemberVO vo) {
+		return dao.searchNickname(vo);
+	}
+	
+	@Override
 	public MemberVO selectOne(MemberVO vo) {
 		return dao.selectOne(vo); 
 	}

@@ -19,7 +19,11 @@ public class MemberDAO {
 	private static final String NS = "green.mapper.MemberMapper.";
 	
 	
-
+	
+	
+	public MemberVO searchNickname(MemberVO vo) {
+		return sqlSession.selectOne(NS+"searchNickname",vo);
+	}//selectone
 	
 	public List<MemberVO> selectList(){
 	

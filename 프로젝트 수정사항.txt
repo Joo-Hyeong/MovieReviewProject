@@ -1,0 +1,10 @@
+// 8월 26일 수정
+
+-주형
+alter table member drop column birthd;
+alter table member modify(point default 0);
+Alter table member add constraint uniqueNick unique (nickname);
+
+조인폼 기능 완성(이메일인증 제외)
+맴버 맵퍼,vo,컨트롤러 수정
+

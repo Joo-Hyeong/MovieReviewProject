@@ -3,14 +3,17 @@ function idCheck(){
 	
 //아이디 조건: 5~10글자, 영문 숫자
 
-	if (id.length<5||id.length>10) {
-		$('#iMessage').html('아이디는 5~10자 이내 입니다.');
+
+		if(id==null){
+			$('#iMessage').html('아이디를 입력해주세요.');
+		}else if (id.length<5||id.length>10) {
+			$('#iMessage').html('아이디는 5~10자 이내 입니다.');
 			return false;
 		}else if (id.replace(/[a-z.0-9]/gi,'').length > 0) {
-		$('#iMessage').html('아이디는 영문, 숫자로 입력해주세요.');
+			$('#iMessage').html('아이디는 영문, 숫자로 입력해주세요.');
 			return false;
 		}else {
-		$('#iMessage').html('');
+			$('#iMessage').html('');
 			return true;
 		}
 }// idCheck
@@ -52,10 +55,11 @@ function nickNameCheck(){
 	var	nickName=$('#nickName').val();
 //닉네임 조건: 2~10글자
 	
-		if(nickName.length<2||nickname.length>10){
+		if(nickName.length<2||nickName.length>10){
 			$('#nMessage').html('닉네임은 2~10자 이내 입니다.');
 			return false;
 		}else{
+			$('#nMessage').html('');
 			return true;
 		}
 }//nickNameCheck

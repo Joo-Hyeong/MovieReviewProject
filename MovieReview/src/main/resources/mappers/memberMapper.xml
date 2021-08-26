@@ -3,44 +3,23 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <mapper namespace="green.mapper.MemberMapper">
   		
- 	
-  		<!-- ** totalRowCount ** -->
-  		<select id="totalRowCount" resultType="int">
-  			select count(*) from member where id != 'admin'
-  		</select>	
+
+  		<select id="searchNickname" resultType="VO.MemberVO">
+
+  			select * from member where nickname = #{nickName} 
+  		</select>  	
   		
-  		<!-- ** PageList ** -->
-  		<select id="pageList" resultType="VO.MemberVO">
-  		select id,password,name,decode(lev,'A', '운영자', 'B', '나무','C','잎','D','손님') 
-  		lev, birthd, point,weight,rid from(select m.*,row_number() over(order by id asc)
-  		 rnum from member m where (id != 'admin') ) where rnum between #{sno} and #{eno}
-  		 
-  		</select>
-  		
-  		<select id="selectList" resultType="VO.MemberVO">
-  		
-  			select * from member where id != 'admin' order by id
-  		</select>
   		
   		 <select id="selectOne" resultType="VO.MemberVO">
   		
-  		<!-- #은 파라미터로 흘러들어오는 값 -->
   			select * from member where id = #{id} 
   		</select>  	
   			
   		<insert id="insert" >
-  		
-  			insert into member values(
-  			#{id},#{password},#{name},#{lev},#{birthd},#{point},#{weight},#{rid})
-  
+
+	 		insert into member(id,password,email,nickname,rid) 
+	 		values(#{id},#{password},#{email},#{nickName},#{rid})
   		</insert>  		
   		
-  		<update id="update">
-  		update member set password=#{password}, name=#{name}, lev=#{lev},
-  		 birthd=#{birthd}, point=#{point}, weight=#{weight}, rid=#{rid} where id=#{id} 
-  		</update>
-  		
-  		<delete id="delete">
-  		delete from member where id=#{id}
-  		</delete>
+
   </mapper>

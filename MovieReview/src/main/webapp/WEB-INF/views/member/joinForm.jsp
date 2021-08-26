@@ -10,6 +10,7 @@
 <link rel="icon" href="/favicon.ico" type="image/x-icon">
 <script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script src="resources/library/checkJoinFrom.js"></script>
+<script src="resources/library/ajaxForMember.js"></script>
 <script>
 
 var iCheck=false;
@@ -32,13 +33,48 @@ $(function(){
 		
 	$('#email').focusout(function(){
 		eCheck=emailCheck();
-		}); 
+	}); 
 		
 	$('#nickName').focusout(function() {
 		nCheck=nickNameCheck();
 	}); 
+	
+	$('#id').click(function(){
 		
+		$('#idCheck').attr("disabled", false);
+	});
+	
+	$('#nickName').click(function(){
+		
+		$('#nickNameCheck').attr("disabled", false);
+	});
 
+	
+	$('#domainf').change(function(){
+		
+		var domainf = $('#domainf').val();
+		
+		if( domainf !='--선택해주세요--'){
+		
+			$('#domain').val(domainf);
+			
+			 if($('#domainf').val()=='직접입력'){
+				 
+			 	$('#domain').attr({
+			 		readonly: false,
+			 		placeholder: '주소를 입력해주세요.'
+			 	});
+			 	$('#domain').val('');
+			}
+		}else{
+			$('#domain').attr({
+		 		readonly: true,
+		 		placeholder: '주소를 선택해주세요.'
+		 	});
+		 	$('#domain').val('');
+		}
+	});// domainf change
+	
 });//ready
 
 function checkForm(){
@@ -56,16 +92,20 @@ function checkForm(){
 	}
 
 	
-	if ( iCheck && pCheck && eCheck &&  
-		 nCheck && rCheck && wCheck	) {
+	if ( iCheck && pCheck && eCheck && nCheck) {
 		   // 오류 확인 완료
 		  alert('축하합니다. 회원가입 되었습니다.');
-		  return true;  
-	}else return false;
+	
+		  return true
+	}else{ 
+		
+		alert('양식을 확인해주세요.');
+		return false;
+	}
 	
 }//checkForm()
 
-
+	
 </script>
 </head>
 <body>
@@ -85,15 +125,20 @@ function checkForm(){
 	<!-- content -->
 	
 
-	<form>
+	<form action="join" method="post">
 	
 	<div>
 		<label for="id">
 		<p>아이디</p> 
 		</label>
 		<span>
-			<input type="text" id="id" name="id" maxlength="10">
-		</span><br>
+			<input type="text" id="id" name="id" maxlength="10">&nbsp;
+		</span>
+			
+		<span>
+			<input type="button" value="중복확인" id="idCheck" >
+		</span>
+		<br>
 		<span id="iMessage" class="message"></span>
 	</div>
 	
@@ -114,7 +159,9 @@ function checkForm(){
 		</label>
 		<span>
 			<input type="text" id="email" name="email" maxlength="15">@
-			<select id="domain" name="domain">
+			<input type="text" id="domain" name="domain" readonly="true" size=15 placeholder="주소를 선택해주세요.">
+			<select id="domainf">
+				<option selected="selected">--선택해주세요--</option>
 				<option>naver.com</option>
 				<option>gmail.com</option>
 				<option>daum.net</option>
@@ -130,8 +177,13 @@ function checkForm(){
 		<p>닉네임</p> 
 		</label>
 		<span>
-			<input type="text" id="nickName" name="nickName" maxlength="10">
-		</span><br>
+			<input type="text" id="nickName" name="nickName" maxlength="10">&nbsp;
+		</span>
+		
+		<span>
+			<input type="button" value="중복확인" id="nickNameCheck" >
+		</span>
+		<br>
 		<span id="nMessage" class="message"></span>
 	</div>
 	
@@ -143,16 +195,16 @@ function checkForm(){
 			<input type="text" id="rid" name="rid" maxlength="10" placeholder="(선택사항)">
 		</span><br>
 		<span id="rMessage" class="message"></span>
-	</div>
+	</div><br>
 	
-	<span>
+	<div>
 		<span>
-			<a href="join" onclick="return checkForm();">확인</a>&nbsp;
+			<input type="submit" onclick="return checkForm();" value="가입">&nbsp;
 		</span>
 		<span>
-			<a href="home">취소</a>
+			<input type="button" value="취소">
 		</span>
-	</span>
+	</div>
 	</form>
 	
 	
