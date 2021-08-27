@@ -18,5 +18,3 @@ Alter table member add constraint uniqueNick unique (nickname);
 홈 화면 분할, 하단바 생성/ 약관에 기능추가/ 디펜던시 추가/ 루트 서블릿 수정
 
 // 8월 28일 수정
-
-
