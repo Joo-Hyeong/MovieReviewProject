@@ -23,7 +23,7 @@
 	
 	<context:component-scan base-package="com.green.project, utill, service" />
 	
-	<!-- 1) JDBC Connection -->
+	<!-- JDBC Connection -->
 	<beans:bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"> 
 		<beans:property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
 		<beans:property name="url" value="jdbc:oracle:thin:@172.30.1.26:1521:xe" /> 
@@ -31,27 +31,15 @@
 		<beans:property name="password" value="1234"/> 
 	</beans:bean>
 	
-	<!-- 2) Mybatis 설정
-		=> sqlsessionFactory -> SqlSessionTemplate -->
-	<!-- 2.1) SqlSessionFactory
-         - MyBatis 와 연동시  DB 연결과 SQL 실행의 핵심 클래스
-         - SqlSessionFactoryBean 에 의해 생성됨 -->
+	<!-- Mybatis -->
     <beans:bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
     	<beans:property name="dataSource" ref="dataSource" />
     	<beans:property name="configLocation" value="classpath:/mybatis-config.xml" /> 
-	  	<!-- mybatis 설정 파일의 위치를 지정합니다. --> 
 	  	<beans:property name="mapperLocations" value="classpath:/mappers/**/*Mapper.xml" /> 
-	  	 <!-- mappers 폴더내의 모든 폴더의 *Mapper.xml 을 인식하도록 해줌 -->
-    	<!-- ** 는 없는거 포함 모든폴더, *은 모든문자를 대신함. -->
     </beans:bean>  
     
     
-     <!-- 2.2) SqlSessionTemplate
-         - SqlSession (interface) 구현클래스
-         - DAO 의 DB연결 & Close 기능, 
-         - Mapper의 Sql 구문을 이용해 DAO의 요청을 처리
-         - sqlSessionFactory 를 생성자로 주입해서 설정  -->
-         
+     <!-- SqlSessionTemplate  -->
      <beans:bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" destroy-method="clearCache">
      	<beans:constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory" />
      </beans:bean>
@@ -61,26 +49,12 @@
 		<beans:property name="maxUploadSize" value="-1" />
 	</beans:bean>
 	
-	<beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	<!--  ** JsonView   -->
+   <beans:bean id="jsonView" class="net.sf.json.spring.web.servlet.view.JsonView" /> 
+   <beans:bean id="viewResolver" 
+         class="org.springframework.web.servlet.view.BeanNameViewResolver">
+      <beans:property name="order" value="1" />
+   </beans:bean>
 
-       xsi:schemaLocation="http://www.springframework.org/schema/beans
-        http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <!-- email 인증 관련   -->
-    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-        <property name="host" value="smtp.gmail.com" />
-        <property name="port" value="587" />
-        <property name="username" value="dlstk31@gmail.com"/>
-        <property name="password" value="ljh940107!" />
-        <property name="javaMailProperties">
-            <props>
-                <prop key="mail.transport.protocol">smtp</prop>
-                <prop key="mail.smtp.auth">true</prop>
-                <prop key="mail.smtp.starttls.enable">true</prop>
-                <prop key="mail.debug">true</prop>
-            </props>
-        </property>
-    </bean>
-</beans>
 </beans:beans>

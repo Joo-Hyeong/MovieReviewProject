@@ -27,8 +27,41 @@ function checkRule(){
 		alert('약관을 확인해주세요.');
 		return false;
 	}
-}
+}// checkRule
 
+$(function(){
+	
+	$('#rule4').change(function(){
+		
+		if($('#rule4').is(":checked")){
+			
+			$('#rule1').prop('checked',true);
+			$('#rule2').prop('checked',true);
+			$('#rule3').prop('checked',true);
+			
+        }else{
+        	$('#rule1').prop('checked',false);
+			$('#rule2').prop('checked',false);
+			$('#rule3').prop('checked',false);
+        }
+	});// rule4 change
+	
+	
+	$('.rule').change(function(){
+		
+		if($('#rule1').is(":checked") && $('#rule2').is(":checked") && $('#rule3').is(":checked")){
+			
+				$('#rule4').prop('checked',true);
+				
+        }else{
+        	
+        		$('#rule4').prop('checked',false);
+        	}
+		
+		});// .rule change
+		
+	
+}); //ready
 
 </script>
 </head>
@@ -52,32 +85,47 @@ function checkRule(){
 	
 	<form>
 	<textarea rows="10" cols="20">동해물과백두산이마르고닳도록</textarea><br>
-	<label for="rule1">
-		<span class="rule_agree">이 약관에 동의하시겠습니까?
-	</label>
-	<input type="checkbox" id="rule1" class="rule"></span><br>
-		
+	
+	<span class="rule_agree">
+		<label for="rule1">
+			이 약관에 동의하시겠습니까?
+		</label>
+		<input type="checkbox" id="rule1" class="rule">
+	</span><br>
+	
 	<textarea rows="10" cols="20">하느님이보우하사우리나라만세</textarea><br>
-	<label for="rule2">
-		<span class="rule_agree">이 약관에 동의하시겠습니까?
-	</label>
-	<input type="checkbox" id="rule2" class="rule"></span><br>
+	
+	<span class="rule_agree">
+		<label for="rule2">
+			이 약관에 동의하시겠습니까?
+		</label>
+		<input type="checkbox" id="rule2" class="rule">
+	</span><br>
 	
 	<textarea rows="10" cols="20">동해물과백두산이마르고닳도록</textarea><br>
 	
-	<label for="rule3">
-		<span class="rule_agree">이 약관에 동의하시겠습니까?
-	</label>
-	<input type="checkbox" id="rule3" class="rule"></span><br>
+	<span class="rule_agree">
+		<label for="rule3">
+			이 약관에 동의하시겠습니까?
+		</label>
+		<input type="checkbox" id="rule3" class="rule">
+	</span><br><br>
 	
-	<span>
+	<span class="rule_agree">
+		<label for="rule4">
+			모든 약관에 동의합니다.
+		</label>
+		<input type="checkbox" id="rule4">
+	</span>
+	
+	<div>
 		<span>
 			<a href="joinF" onclick="return checkRule();">확인</a>&nbsp;
 		</span>
 		<span>
 			<a href="home">취소</a>
 		</span>
-	</span>
+	</div>
 	</form>
 	
 	
