@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import utill.ActorDAO;
 import VO.ActorVO;
-import VO.PageVO;
 
 //** interface 자동완성 
 //=> Alt + Shift + T  
@@ -18,10 +17,6 @@ public class ActorServiceImpl implements ActorService {
 	@Autowired
 	ActorDAO dao ;
 	
-	@Override
-	public PageVO<ActorVO> pageList(PageVO<ActorVO> pvo) {
-		return dao.pageList(pvo);
-	}
 	
 	@Override
 	public List<ActorVO> selectList() {

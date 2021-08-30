@@ -8,8 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import VO.MovieVO;
-import VO.PageVO;
-
 
 @Repository
 public class MovieDAO {
@@ -19,14 +17,6 @@ public class MovieDAO {
 	
 	private static final String NS = "green.mapper.MovieMapper.";
 	
-	// ** pageList
-	public PageVO<MovieVO> pageList(PageVO<MovieVO> pvo) {
-		// => 전체Row수(totalRowCount)
-		pvo.setTotalRowCount(sqlSession.selectOne(NS+"totalRowCount"));
-		// => 출력 Data 
-		pvo.setList(sqlSession.selectList(NS+"pageList", pvo));
-		return pvo;
-	} //pageList
 
 	
 	public List<MovieVO> selectList(){

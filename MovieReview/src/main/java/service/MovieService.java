@@ -3,11 +3,9 @@ package service;
 import java.util.List;
 
 import VO.MovieVO;
-import VO.PageVO;
 
 public interface MovieService {
 
-	PageVO<MovieVO> pageList(PageVO<MovieVO> pvo);
 
 	List<MovieVO> selectList(); //selectList()
 

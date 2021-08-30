@@ -94,7 +94,7 @@ function stickyFooter(){
 <div id="footer"><!-- footer -->
 	<div id="menu1" class="footmenu"><a href="joinA">회원가입</a></div>
 	<div id="menu2" class="footmenu"><a href="loginF">로그인</a></div>
-	<div id="menu3" class="footmenu"><a href="#">고객센터</a></div>
+	<div id="menu3" class="footmenu"><a href="qalist">고객센터</a></div>
 	<div id="menu4" class="footmenu"><a href="#">광고</a></div>
 </div><!-- //footer -->
 

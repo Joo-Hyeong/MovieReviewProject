@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import utill.MovieDAO;
 import VO.MovieVO;
-import VO.PageVO;
 
 //** interface 자동완성 
 //=> Alt + Shift + T  
@@ -18,10 +17,6 @@ public class MovieServiceImpl implements MovieService {
 	@Autowired
 	MovieDAO dao ;
 	
-	@Override
-	public PageVO<MovieVO> pageList(PageVO<MovieVO> pvo) {
-		return dao.pageList(pvo);
-	}
 	
 	@Override
 	public List<MovieVO> selectList() {
