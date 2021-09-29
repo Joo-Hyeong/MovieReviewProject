@@ -19,6 +19,9 @@ trailer VARCHAR2(200) NOT NULL,
 CONSTRAINT PK_MOVIE primary key(movie_num)
 );
 
+
+Select distinct MOVIE_NUM, MOVIE_TITLE, DIRECTOR, RELEASE, POSTERFILE, TRAILER from (select m.*, row_number() over(order by m.movie_num asc) rnum from movie m, actor a  where m.movie_num >0 and m.movie_num = a.movie_num and movie_title like '%반지%') where rnum between 1 and 3;
+
 insert into movie values(1,'반지의 제왕: 반지 원정대','피터 잭슨','2002-01-01','resources/posterImage/1.jpg','https://youtu.be/z_WZxJpHzEE');
 insert into movie values(2,'반지의 제왕: 두개의 탑','피터 잭슨','2002-12-19','resources/posterImage/2.jpg','https://youtu.be/Y4neBR0h39c');
 insert into movie values(3,'반지의 제왕: 왕의 귀환','피터 잭슨','2003-12-17','resources/posterImage/3.jpg','https://youtu.be/KOQSQaGgJxs');

@@ -9,8 +9,7 @@ public class MemberVO {
 	private String password;
 	private String email;
 	private String nickName;
-	private int grade;
-	private int point;
+	private String grade;
 	private String rid;
 
 }

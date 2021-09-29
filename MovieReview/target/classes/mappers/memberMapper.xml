@@ -3,6 +3,53 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <mapper namespace="green.mapper.MemberMapper">
   		
+  		
+  <sql id="search">
+  	<if test="keyword != null">
+     <bind name="key" value="'%'+keyword+'%'"/>
+  	</if>  
+
+  <choose>
+     <when test="searchType=='i'.toString()">
+       and id Like #{key} )
+     </when>
+     
+      <when test="searchType=='nn'.toString()">
+       and nickName Like #{key} )
+     </when>
+     
+      <when test="searchType=='a'.toString()">
+       and nickName Like #{key} 
+       or id Like #{key} )
+     </when>
+     
+     <otherwise>)</otherwise> 
+  </choose>
+  </sql>
+
+	<select id="searchRowsCount" resultType="int">
+	<![CDATA[
+		select count(*) from member where ( id != 'admin' ]]>
+		<include refid="search"></include>
+	</select>
+  	   
+ 	
+ 	<select id="searchList" resultType="VO.MemberVO">
+ 		<![CDATA[
+		select id,password, email, nickname, 
+		DECODE(grade,'a','준회원','b','회원','c','운영자') grade, rid
+		from (select m.* , ROW_NUMBER() OVER(order by id desc) rnum from member m
+		where  id != 'admin' ]]>
+		<include refid="search"></include>
+		<!-- 조건문의 id : search -->
+		where rnum between #{sno} and #{eno}
+	</select>
+ 	
+  		<!-- ** totalRowCount ** -->
+  		<select id="totalRowCount" resultType="int">
+  			select count(*) from member
+  		</select>	
+
 
   		<select id="searchNickname" resultType="VO.MemberVO">
 
@@ -14,12 +61,40 @@
   		
   			select * from member where id = #{id} 
   		</select>  	
+  		
+  		<select id="authRequest" resultType="VO.MemberVO">
+  		
+  			select * from member where id = #{id} and email = #{email}
+  		</select> 
   			
   		<insert id="insert" >
 
 	 		insert into member(id,password,email,nickname,rid) 
 	 		values(#{id},#{password},#{email},#{nickName},#{rid})
-  		</insert>  		
+  		</insert>
+  		
+  		<select id="selectList" resultType="VO.MemberVO">
+  		
+			select * from member where id != 'admin' order by id
+		</select>
+	
+		
+		<update id="update">
+		
+			update member set password=#{password}, email=#{email}, nickname=#{nickName},
+			grade=#{grade}, rid=#{rid} where id=#{id}
+		</update>
+		
+		<update id="updateExceptPassword">
+		
+			update member set email=#{email}, nickname=#{nickName},
+			grade=#{grade}, rid=#{rid} where id=#{id}
+		</update>
+		
+		<delete id="delete">
+		
+			delete from member where id=#{id}	
+		</delete>  		
   		
 
   </mapper>

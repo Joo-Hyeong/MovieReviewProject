@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="green.mapper.WishMapper">
+ 
+	<sql id="search">
+		<choose>
+    	 <when test="searchType=='b'.toString()">
+     	   movie_num = #{movie_num}
+    	 </when>
+     	
+     	<when test="searchType=='a'.toString()">
+     	   id = #{id}
+    	 </when>
+    	 
+     	<otherwise>)</otherwise> 
+  		</choose>
+	</sql>
+
+
+	<select id="searchRowsCount" resultType="int">
+	<![CDATA[
+		select count(*) from wish where ]]>
+	<include refid="search"></include>
+	</select>
+
+	<select id="selectOne" resultType="VO.WishVO">
+		select * from wish where id=#{id} and movie_num=#{movie_num}
+	</select>
+
+	<select id="searchList" resultType="VO.WishVO">
+	
+	<![CDATA[
+		select * from wish where 	]]>
+		
+		<include refid="search"></include>
+	
+	</select>
+
+	<insert id="insert" >
+		
+	 		insert into wish(id,movie_num) values(#{id},#{movie_num})
+	 	
+  	</insert> 
+  	 	
+	<delete id="delete">
+		
+			delete from wish where id=#{id} and movie_num=#{movie_num}
+		</delete> 
+
+
+</mapper>  
+  

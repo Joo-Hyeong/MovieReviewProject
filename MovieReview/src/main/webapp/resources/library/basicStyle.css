@@ -1,0 +1,77 @@
+@charset "UTF-8";
+
+
+	* {
+ 		margin: 0;
+		 padding: 0;
+	}
+
+#footer {
+
+    position:fixed;
+
+    bottom:0;
+
+    width: 100%;
+
+    background:#ccc;
+}
+
+
+	.footmenu{
+		width: 20%;
+		float: left;
+		height:50px;
+		text-align:center;
+		line-height:50px;
+
+	}
+	
+	#search {
+		
+		background-color: black; 
+		opacity:0.5; 
+		height: 50px; 
+		width: 35%;
+		position: fixed;
+		left:32.5%;
+		top: 25%;
+		z-index: 3;
+		
+	}
+	
+	
+	#search1{
+		width:85%;
+ 		height:50px;
+		float: left;
+	}
+	
+	#search2{
+		width:15%;
+ 		height:50px;
+ 		float: left;
+	}
+	
+
+	
+	#keyword {
+  			font-size:25px;
+			text-align: center;	
+			height:50px;
+			width:100%;
+	}
+	
+	
+	
+	#searchImg{
+		height:46.5px;
+		width:100%;
+		
+	}
+	
+	 #searchButton{
+		height:50px;
+		width:100%;
+		
+	}

@@ -26,8 +26,8 @@ public class ActorDAO {
 	}// selectList	
 	
 
-	public List<ActorVO> selectOne(ActorVO vo) {
-		return sqlSession.selectList(NS+"selectOne",vo);
+	public List<ActorVO> selectListActs(ActorVO vo) {
+		return sqlSession.selectList(NS+"selectListActs",vo);
 	}//selectone
 	
 	// insert

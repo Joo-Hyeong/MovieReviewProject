@@ -3,8 +3,7 @@ package service;
 import java.util.List;
 
 import VO.QABoardVO;
-import criTest.Criteria;
-import criTest.SearchCriteria;
+import criForBoard.SearchCriteria;
 
 public interface QABoardService {
 	
@@ -12,9 +11,12 @@ public interface QABoardService {
 	public int searchRowsCount(SearchCriteria cri);
 	public List<QABoardVO> searchList(SearchCriteria cri);
 	
-	// PageList2. => ver01 : criPageList
-	public int totalRowsCount();
-	public List<QABoardVO> criPList(Criteria cri);
+	
+	public int searchNewRowsCount(SearchCriteria cri);
+	public List<QABoardVO> searchNewList(SearchCriteria cri);
+	
+	public List<QABoardVO> myQAList(QABoardVO vo);
+	public List<QABoardVO> myQAList2(QABoardVO vo);
 	
 	int replyInsert(QABoardVO vo); // 답글등록
 
@@ -27,5 +29,6 @@ public interface QABoardService {
 	int insert(QABoardVO vo); //insert
 	int update(QABoardVO vo); //update
 	int delete(QABoardVO vo); //delete
+	int updateNtoY(QABoardVO vo);
 
 }

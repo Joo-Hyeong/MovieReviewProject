@@ -5,4 +5,9 @@
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
 		
+		
+		<!-- BcrybtPasswordEncoder -->
+		<bean id="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
+
+		
 </beans>

@@ -1,0 +1,8 @@
+create table qaboard as select * from system.board;
+alter table qaboard add secret varchar2(2);
+update qaboard set secret='Y';
+update qaboard set secret='N' where id='apple';
+
+
+------------------------------------------------
+alter table qaboard add answer varchar2(2) ;

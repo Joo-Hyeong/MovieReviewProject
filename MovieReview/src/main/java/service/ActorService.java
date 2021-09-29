@@ -9,7 +9,7 @@ public interface ActorService {
 
 	List<ActorVO> selectList(); //selectList()
 
-	List<ActorVO> selectOne(ActorVO vo); //selectOne
+	List<ActorVO> selectListActs(ActorVO vo); //selectOne
 
 	int insert(ActorVO vo); //insert
 

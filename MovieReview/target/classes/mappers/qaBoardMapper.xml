@@ -3,39 +3,18 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="green.mapper.QABoardMapper">
 
-<!-- SQL 쿼리문에서 비교연산자 사용하는 경우  
-	XML에서는  <,>등 비교연산자의 경우 XML규칙상 에러 나기때문에,
-	이기호를 연산자로 인식하도록 하기 위해서는 SQL문을 CDATA로 묶어 주어야 한다.
-	<![CDATA[ SELECT * FROM table WHERE id > 1 ]]> 
--->
-
-<!-- ** Ajax idBoardList -->
-	<select id="aidBList" resultType="VO.QABoardVO">
+<!-- ** Ajax myQABoardList -->
+	<select id="myQAList" resultType="VO.QABoardVO">
 		select seq,title,id,regdate,cnt,root,step,indent from qaboard 
 		where id=#{id} order by root desc, step asc 
 	</select>
-
-<!-- ** SearchCriteria PageList ****** 
-=> searchType 별 검색 조건문 만들기
-=> Sql , include 태그 : 반복되는 쿼리 묶기
-
-=> title Like '%#{keyword}%' 
-=> '%' + #{keyword} + '%'
-=> CONCAT(i1,i2) , ||
-=> CONCAT : 두개의 문자열 합침 
-			3개의 문자열을 합치려면 아래처럼 함수를 함수로 감싸줘야 한다. 
-			( MySql은 3개 가능 )
-			
-=> 만약 keyword 를 선택하지 않은 경우 라면
-   select id from board where id like '%%' ;
-   -> 무조건(전체검색) 과 동일	
-   
-=> 바인딩 변수 사용하기
-   -> 정의: <bind name="keyVal" value="'%'+keyword+'%'"/>	
-   -> 사용: title Like #{keyVal}
---> 
-
-<!-- select * from board where title LIKE '%Java%'  --> 
+	
+<!-- ** Ajax myQABoardList2 -->
+	<select id="myQAList2" resultType="VO.QABoardVO">
+		select seq,title,id,regdate,cnt,root,step,indent from qaboard 
+		where root=#{root} order by root desc, step asc 
+	</select>
+ 
 <sql id="search">
   <if test="keyword != null">
   	<bind name="keyVal" value="'%'+keyword+'%'"/>
@@ -87,25 +66,24 @@
 
 	<select id="searchList" resultType="VO.QABoardVO">
 	<![CDATA[
-		select seq,title,id,regdate,cnt,root,step,indent from 
+		select seq,title,id,regdate,cnt,root,step,indent,secret from 
 		(select b.* , ROW_NUMBER() OVER(order by root desc, step asc) rnum from qaboard b
 		where  seq > 0 ]]>
 		<include refid="search"></include>
 		<!-- 조건문의 id : search -->
 		where rnum between #{sno} and #{eno}
 	</select>
-
-<!-- ** 조회수증가 -->
-	<update id="countUp">
-		update qaboard set cnt=cnt+1 where seq=#{seq}
-	</update>
 	
-<!-- ** 답글입력 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-=> OLD 구문
-	insert into board values (
-		(select nvl(max(seq),0)+1 from board),
-		#{title},#{id},#{content},SYSDATE,0,#{root},#{step},#{indent})
--->	
+	<select id="searchNewList" resultType="VO.QABoardVO">
+	<![CDATA[
+		select * from 
+		(select b.* , ROW_NUMBER() OVER(order by root desc, step asc) rnum from qaboard b
+		where answer='N' and id !='admin' ]]>
+		<include refid="search"></include>
+		<!-- 조건문의 id : search -->
+		where rnum between #{sno} and #{eno}
+	</select>
+	
 	<update id="stepUpdate">
 		update qaboard set step=step+1 where root=#{root} and step>=#{step}
 	</update>
@@ -113,61 +91,49 @@
 		<selectKey keyProperty="seq" resultType="int" order="BEFORE">
 			select nvl(max(seq),0)+1 from qaboard
 		</selectKey>
-		insert into board values (
-		#{seq},#{title},#{id},#{content},SYSDATE,0,#{root},#{step},#{indent})
+		insert into qaboard values (
+		#{seq},#{title},#{id},#{content},SYSDATE,0,#{root},#{step},#{indent},#{secret},'N')
 	</insert>
 
 <!-- ** PageList ~~~~~~~~~~~~~~~~~~~~~~-->
 	<select id="totalRowCount" resultType="int">
-		select count(*) from board
+		select count(*) from qaboard
 	</select>
 	
+	<update id="countUp">
+		update qaboard set cnt=cnt+1 where seq=#{seq}
+	</update>
+	
 	<select id="pageList" resultType="VO.QABoardVO">
-		select seq,title,id,regdate,cnt,root,step,indent from 
+		select seq,title,id,regdate,cnt,root,step,indent,secret from 
 		(select b.* , ROW_NUMBER() OVER(order by root desc, step asc) rnum from qaboard b) 
 		where rnum between #{sno} and #{eno}
 	</select>
 
 	<select id="selectList" resultType="VO.QABoardVO">
-		select seq,title,id,regdate,cnt,root,step,indent from 
+		select seq,title,id,regdate,cnt,root,step,indent,secret from 
 		qaboard order by root desc, step asc
 	</select>
 	
 	<select id="selectOne" resultType="VO.QABoardVO">
 		select * from qaboard where seq = #{seq}
 	</select>
-<!-- 원글 입력 
-** selectKey Test
-=> https://deeplify.dev/back-end/spring/select-key
-=> AutoNumbering 을 편리하게 할 수 있도록 지원
-=> DB작업중 먼저 어떤 키값을 가져와서 증가시켜서 입력하거나 혹은 입력후에 증가된 키값을 가져올 필요가 있을때,
-   selectKey를 이용하면 별도의 쿼리로직 없이 해당 메소드에서 일괄처리할 수가 있음.
-   keyProperty: selectKey구문의 결과가 셋팅될 대상 프로퍼티.
-   resultType: 결과의 타입.
-   order: BEFORE 또는 AFTER
-          BEFORE로 설정하면 키를 먼저 조회하고 그 값을 keyProperty 에 셋팅한 뒤 insert 구문실행.
-          AFTER로 설정하면 insert 구문을 실행한 뒤 selectKey 구문 실행.
-          오라클에서는 insert구문 내부에서 일관된 호출형태로 처리한다.
-   statementType: STATEMENT, PREPARED 또는 CALLABLE중 하나 선택가능.
-          마이바티스에게 Statement, PreparedStatement 또는 CallableStatement를 사용하게 한다.
-          디폴트는 PREPARED.
-=> OLD 구문
-	insert into board values ( 
-		(select nvl(max(seq),0)+1 from board),
-		#{title},#{id},#{content},SYSDATE,0,
-		(select nvl(max(seq),0)+1 from board),0,0)          
--->
+
 	<insert id="insert">
 		<selectKey keyProperty="seq" resultType="int" order="BEFORE">
 			select nvl(max(seq),0)+1 from qaboard
 		</selectKey>
-		insert into board values ( 
+		insert into qaboard values ( 
 			#{seq},#{title},#{id},#{content},SYSDATE,0,
-			#{seq},0,0)
+			#{seq},0,0,#{secret},'N')
 	</insert>
 	
 	<update id="update">
-		update qaboard set title=#{title}, content=#{content} where seq=#{seq}
+		update qaboard set title=#{title}, content=#{content}, secret=#{secret} where seq=#{seq}
+	</update>
+	
+	<update id="updateNtoY">
+		update qaboard set answer='Y' where seq=#{seq}
 	</update>
 	
 	<delete id="delete">

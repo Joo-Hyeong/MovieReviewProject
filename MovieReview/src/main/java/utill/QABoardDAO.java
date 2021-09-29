@@ -7,14 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import VO.QABoardVO;
-import criTest.Criteria;
-import criTest.SearchCriteria;
-import lombok.extern.log4j.Log4j;
+import criForBoard.SearchCriteria;
+
 
 // ** Board CRUD
 // => selectList, selectOne, insert, update, delete 
 
-@Log4j
+
 @Repository
 public class QABoardDAO {
 	@Autowired
@@ -29,22 +28,29 @@ public class QABoardDAO {
 	public List<QABoardVO> searchList(SearchCriteria cri) {
 		return sqlSession.selectList(NS+"searchList",cri);
 	}
+	
+	public int searchNewRowsCount(SearchCriteria cri) {
+		return sqlSession.selectOne(NS+"searchNewRowsCount",cri);
+	}
+	
+	
+	public List<QABoardVO> searchNewList(SearchCriteria cri) {
+		return sqlSession.selectList(NS+"searchNewList",cri);
+	}
 	//----------------------------------------------------- 
+	public List<QABoardVO> myQAList(QABoardVO vo) {
+		return sqlSession.selectList(NS+"myQAList",vo);
+	}
+	public List<QABoardVO> myQAList2(QABoardVO vo) {
+		return sqlSession.selectList(NS+"myQAList2",vo);
+	}
 	
-	// PageList2. => ver01 : criPageList ------------------------
-	public int totalRowsCount() {
-		return sqlSession.selectOne(NS+"totalRowCount");
-	} //totalRowsCount
-	
-	public List<QABoardVO> criPList(Criteria cri) {
-		return sqlSession.selectList(NS+"pageList",cri);
-	} //criPList
-	//---------------------------------------------------
-	
+	public int updateNtoY(QABoardVO vo) {
+		return sqlSession.update(NS+"updateNtoY",vo);
+	} //update
 	
 	// ** 답글등록
 	public int replyInsert(QABoardVO vo) {
-		log.info("** Step_Update Count => "+sqlSession.update(NS+"stepUpdate",vo));
 		return sqlSession.insert(NS+"replyInsert",vo);
 	} //replyInsert
 	

@@ -2,7 +2,45 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <mapper namespace="green.mapper.MovieMapper">
+  
+
+  <sql id="search">
+  	<if test="keyword != null">
+     <bind name="key" value="'%'+keyword+'%'"/>
+  	</if>  
+
+  <choose>
+     <when test="searchType=='all'.toString()">
+        and (movie_title Like #{key}
+        or 	director Like #{key} 
+        or 	actor Like #{key} ))
+     </when>
+     <otherwise>)</otherwise> 
+  </choose>
+  </sql>
+  
   		
+  		<select id="findMovieNum" resultType="VO.MovieVO">
+  		
+  			select * from movie where movie_title = #{movie_title} and director = #{director} 
+  		</select>
+ 		
+ 		<select id="searchRowsCount" resultType="int">
+  			<![CDATA[
+  				select count(distinct m.movie_num) from movie m, actor a where (m.movie_num=a.movie_num and m.movie_num> 0  ]]>
+  			<include refid="search"></include>
+  		</select>
+  	   
+ 	
+ 		<select id="searchList" resultType="VO.MovieVO">
+ 		<![CDATA[
+  		Select distinct MOVIE_NUM, MOVIE_TITLE, DIRECTOR, RELEASE, POSTERFILE, TRAILER  
+  		from (select m.*, row_number() over(order by m.movie_num asc) rnum from movie m, actor a
+  		where m.movie_num = a.movie_num and m.movie_num >0  ]]>
+  		
+  		<include refid="search"></include>	
+  		where rnum between #{sno} and #{eno}
+  		</select>
  	
   		<!-- ** totalRowCount ** -->
   		<select id="totalRowCount" resultType="int">
@@ -11,21 +49,94 @@
   		
   		<!-- ** PageList ** -->
   		<select id="pageList" resultType="VO.MovieVO">
-  		select movie_num,movie_title,director,release, posterfile,trailer 
+  		select * 
   		from(select m.*,row_number() over(order by release)
   		 rnum from movie m) where rnum between #{sno} and #{eno}
   		 
   		</select>
   		
+<!-- ==============<< pageRows >>================================= -->  
+
+  		<select id="pageRowsCountNew" resultType="int">
+  		<![CDATA[
+  		
+  			select count(*) from movie where sysdate-to_date(release,'YYYY/MM/DD')<30
+  		]]>
+  		</select>
+
+  		<select id="pageRowsCountRandom" resultType="int">
+  		
+  			select count(*) from movie
+  		</select>
+ 
+  		<select id="pageRowsCountRate" resultType="int">
+  		
+  			select count(*) from movie m , 
+  			(select movie_num, nvl(avg(rate),0) rate_avg from rating group by movie_num) 
+  			r where m.movie_num=r.movie_num
+  		</select>
+  		
+<!-- ==============<< pageLists >>================================ -->
+
+
+  		<select id="pageListNew" resultType="VO.MovieVO">
+  		<![CDATA[
+  			
+			select * from (select m.*,row_number() over(order by release)
+  		 	rnum from movie m where sysdate-to_date(release,'YYYY/MM/DD')<30)  
+  			where rnum between #{sno} and #{eno}
+  			
+  			]]>
+  		</select>
+  		
+   		<select id="pageListRandom" resultType="VO.MovieVO">
+  		
+  			select * from (select m.*,row_number() over(order by dbms_random.value)
+  		 	rnum from movie m) where rnum between #{sno} and #{eno}
+  		 	
+  		</select>
+  		
+  		<select id="pageListRate" resultType="VO.MovieVO">
+  		
+			select * from (select m.*,row_number() over(order by r.rate_avg desc)
+  		 	rnum from movie m, (select movie_num, nvl(avg(rate),0) rate_avg from rating group by movie_num) r where m.movie_num=r.movie_num  )
+  			where rnum between #{sno} and #{eno}
+  			
+  		</select>
+
+
+<!-- ============================================================= -->
+  		
   		<select id="selectList" resultType="VO.MovieVO">
   		
-  			select * from movie order by release
+  			select * from movie order by release desc
+  		</select>
+  		
+  		<select id="selectListNew" resultType="VO.MovieVO">
+  		<![CDATA[
+  			select m.*, nvl(rate_avg,0) rate_avg from movie m, (select movie_num, avg(nvl(rate,0)) rate_avg from rating group by movie_num)r
+  			where m.movie_num=r.movie_num(+) and sysdate-to_date(m.release,'YYYY/MM/DD')<30
+  			]]>
+  		</select>
+  		
+  		
+  		<select id="selectListRandom" resultType="VO.MovieVO">
+  		
+  			select m.*, nvl(rate_avg,0) rate_avg from movie m, (select movie_num, nvl(avg(rate),0) rate_avg from rating group by movie_num) 
+  			r where m.movie_num=r.movie_num(+) order by dbms_random.value
+  		</select>
+  		
+  		<select id="selectListRate" resultType="VO.MovieVO">
+  		
+  			select m.*, nvl(rate_avg,0) rate_avg from movie m, (select movie_num, nvl(avg(rate),0) rate_avg from rating group by movie_num) 
+  			r where m.movie_num=r.movie_num(+) order by r.rate_avg desc
   		</select>
   		
   		 <select id="selectOne" resultType="VO.MovieVO">
   		
   		<!-- #은 파라미터로 흘러들어오는 값 -->
-  			select * from movie where movie_num = #{movie_num} 
+  			select m.*, nvl(rate_avg,0) rate_avg from movie m, (select movie_num, nvl(avg(rate),0) rate_avg from rating group by movie_num) 
+  			r where m.movie_num = #{movie_num} and m.movie_num=r.movie_num(+) order by release desc
   		</select>  	
   			
   		<insert id="insert" >

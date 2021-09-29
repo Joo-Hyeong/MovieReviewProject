@@ -21,7 +21,7 @@
   			select * from actor order by actor asc
   		</select>
   		
-  		 <select id="selectOne" resultType="VO.ActorVO">
+  		 <select id="selectListActs" resultType="VO.ActorVO">
   		
   		<!-- #은 파라미터로 흘러들어오는 값 -->
   			select * from actor where movie_num = #{movie_num} 

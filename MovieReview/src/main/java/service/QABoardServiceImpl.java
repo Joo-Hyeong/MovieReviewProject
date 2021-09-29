@@ -6,8 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import VO.QABoardVO;
-import criTest.Criteria;
-import criTest.SearchCriteria;
+import criForBoard.SearchCriteria;
 import utill.QABoardDAO;
 
 //** interface 자동완성 
@@ -20,6 +19,13 @@ public class QABoardServiceImpl implements QABoardService {
 	QABoardDAO dao;
 	
 	
+	
+	
+	@Override
+	public int updateNtoY(QABoardVO vo) {
+		return dao.updateNtoY(vo);
+	}
+	
 	// PageList2. => ver02 : SearchPageList--------------- 
 	@Override
 	public int searchRowsCount(SearchCriteria cri) {
@@ -29,19 +35,29 @@ public class QABoardServiceImpl implements QABoardService {
 	public List<QABoardVO> searchList(SearchCriteria cri) {
 		return dao.searchList(cri);
 	}
+	
+	@Override
+	public int searchNewRowsCount(SearchCriteria cri) {
+		return dao.searchNewRowsCount(cri);
+	}
+	
+	@Override
+	public List<QABoardVO> searchNewList(SearchCriteria cri) {
+		return dao.searchNewList(cri);
+	}
 	//----------------------------------------------------- 
 	
-	// PageList2. => ver01 : criPageList --------------------------
 	@Override
-	public int totalRowsCount() {
-		return dao.totalRowsCount();
-	} //totalRowsCount
+	public List<QABoardVO> myQAList(QABoardVO vo) {
+		// TODO Auto-generated method stub
+		return dao.myQAList(vo);
+	}
 	
 	@Override
-	public List<QABoardVO> criPList(Criteria cri) {
-		return dao.criPList(cri);
-	} //criPList
-	//-------------------------------------------------------
+	public List<QABoardVO> myQAList2(QABoardVO vo) {
+		// TODO Auto-generated method stub
+		return dao.myQAList2(vo);
+	}
 	
 	// 답글등록
 	@Override

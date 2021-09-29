@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import VO.MemberVO;
 
 
+
 @Repository
 public class MemberDAO {
 
@@ -18,7 +19,13 @@ public class MemberDAO {
 	
 	private static final String NS = "green.mapper.MemberMapper.";
 	
+	public List<MemberVO> searchList(criForMember.SearchCriteria cri){
+		return sqlSession.selectList(NS+"searchList",cri);
+	}
 	
+	public int searchRowsCount(criForMember.SearchCriteria cri) {
+		return sqlSession.selectOne(NS+"searchRowsCount",cri);
+	}
 	
 	
 	public MemberVO searchNickname(MemberVO vo) {
@@ -30,7 +37,10 @@ public class MemberDAO {
 	return sqlSession.selectList(NS+"selectList");
 	}// selectList	
 	
-
+	public MemberVO authRequest(MemberVO vo) {
+		return sqlSession.selectOne(NS+"authRequest",vo);
+	}//authRequest
+	
 	public MemberVO selectOne(MemberVO vo) {
 		return sqlSession.selectOne(NS+"selectOne",vo);
 	}//selectone
@@ -45,7 +55,15 @@ public class MemberDAO {
 	
 		return sqlSession.update(NS+"update", vo);
 	}//update 종료
-//	
+	
+	
+	// updateExceptPassword
+	public int updateExceptPassword(MemberVO vo) {
+		
+			return sqlSession.update(NS+"updateExceptPassword", vo);
+	}//updateExceptPassword 종료
+	
+	
 	// delete
 	public int delete(MemberVO vo) {
 		

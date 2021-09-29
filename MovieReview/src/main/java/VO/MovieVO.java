@@ -14,4 +14,6 @@ public class MovieVO {
 	private String posterfile;
 	private MultipartFile posterfilef;
 	private String trailer;
+	private String like;
+	private int rate_avg;
 }

@@ -22,14 +22,22 @@
 	</beans:bean>
 	
 	<context:component-scan base-package="com.green.project, utill, service" />
-	<!-- <beans:property name="url" value="jdbc:oracle:thin:@172.30.1.26:1521:xe" />  -->
-	<!-- JDBC Connection -->
-	<beans:bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"> 
+	
+ <!-- JDBC Connection -->
+		<!--<beans:bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<beans:property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
-		<beans:property name="url" value="jdbc:oracle:thin:@127.0.0.1:1521:xe"/>
+		<beans:property name="url" value="jdbc:oracle:thin:@127.0.0.1:1521:xe"/> 창우
 		<beans:property name="username" value="greenproject"/> 
 		<beans:property name="password" value="1234"/> 
-	</beans:bean>
+		</beans:bean> -->	
+
+		<beans:bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<beans:property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
+		<beans:property name="url" value="jdbc:oracle:thin:@172.30.1.26:1521:xe" /> <!-- 주형 -->
+		<!-- 	<beans:property name="url" value="jdbc:oracle:thin:@127.0.0.1:1521:xe"/> 창우 -->
+		<beans:property name="username" value="greenproject"/> 
+		<beans:property name="password" value="1234"/> 
+		</beans:bean>	
 	
 	<!-- Mybatis -->
     <beans:bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
@@ -38,6 +46,8 @@
 	  	<beans:property name="mapperLocations" value="classpath:/mappers/**/*Mapper.xml" /> 
     </beans:bean>  
     
+
+
     
      <!-- SqlSessionTemplate  -->
      <beans:bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" destroy-method="clearCache">

@@ -23,8 +23,8 @@ public class ActorServiceImpl implements ActorService {
 		return dao.selectList();
 	} //selectList()
 	@Override
-	public List<ActorVO> selectOne(ActorVO vo) {
-		return dao.selectOne(vo);
+	public List<ActorVO> selectListActs(ActorVO vo) {
+		return dao.selectListActs(vo);
 	} //selectOne
 	
 	@Override

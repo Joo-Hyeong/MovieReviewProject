@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import utill.MemberDAO;
 import VO.MemberVO;
+import criForMember.SearchCriteria;
 
 @Service
 public class MemberServiceimpl implements MemberService {
@@ -26,6 +27,11 @@ public class MemberServiceimpl implements MemberService {
 	}
 	
 	@Override
+	public MemberVO authRequest(MemberVO vo) {
+		return dao.authRequest(vo);
+	}
+	
+	@Override
 	public MemberVO selectOne(MemberVO vo) {
 		return dao.selectOne(vo); 
 	}
@@ -41,7 +47,22 @@ public class MemberServiceimpl implements MemberService {
 	}
 	
 	@Override
+	public int updateExceptPassword(MemberVO vo) {
+		return dao.updateExceptPassword(vo);
+	}
+		
+	@Override
 	public int delete(MemberVO vo) {
 		return dao.delete(vo);
+	}
+	
+	@Override
+	public List<MemberVO> searchList(SearchCriteria cri) {
+		return dao.searchList(cri);
+	}
+
+	@Override
+	public int searchRowsCount(SearchCriteria cri) {
+		return dao.searchRowsCount(cri);
 	}
 }
