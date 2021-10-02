@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import VO.MemberVO;
 import VO.MovieVO;
+import VO.RatingVO;
 import VO.WishVO;
 import service.MemberService;
 import service.MovieService;
@@ -90,15 +91,29 @@ public class WishController {
 		return mv;
 	}//wishlist
 	
+//	@RequestMapping(value = "/wdelete")
+//	public ModelAndView wdelete(ModelAndView mv,WishVO wvo) {
+//		if(serviceW.delete(wvo)>0) {
+//			mv.addObject("message","삭제 성공");
+//		} else {
+//			mv.addObject("message","삭제 실패");
+//		}
+//		mv.setViewName("jsonview");
+//		return mv;
+//	}//winsert
+	
 	@RequestMapping(value = "/wdelete")
-	public ModelAndView wdelete(ModelAndView mv,WishVO wvo) {
-		if(serviceW.delete(wvo)>0) {
-			mv.addObject("message","삭제 성공");
-		} else {
-			mv.addObject("message","삭제 실패");
+	public ModelAndView rdelete(ModelAndView mv,WishVO wvo,HttpServletRequest request ) {
+		String chk[] = request.getParameterValues("chk[]");
+		
+		wvo.setId((String)request.getSession().getAttribute("loginID"));
+		for(String s:chk) {
+			wvo.setMovie_num(Integer.parseInt(s));
+			serviceW.delete(wvo);
 		}
-		mv.setViewName("jsonView");
+		
+		mv.setViewName("redirect:myinfo");
 		return mv;
-	}//winsert
+	}//rdelete
 	
 }

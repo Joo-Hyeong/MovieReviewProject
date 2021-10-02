@@ -7,7 +7,7 @@
 <html>
 <html lang="en">
 <head>
-<title>내 정보</title>
+<title>글 수정</title>
 <!-- for-mobile-apps -->
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -170,67 +170,18 @@ function passwordCheckLogin(){
 }//passCheck
 
 
+function checkForm(){
+	
+	if($('#title').val().length<1||$('#content').val().length<1){
+		alert('제목 혹은 내용을 제대로 입력해주세요.');
+		return false;
+	}else{
+		alert('글 수정 완료');
+	}
+	
+}
+
 </script>
-
-
-
-<script type="text/javascript">
-
-$.ajax({
-	type:"Get",
-	url:"myratings",
-	data:{id:'${loginID}',
-		  searchType:'w'},
-	success:function(resultPage) {
-		$('#comment').html(resultPage);
-		},
-	error:function() {
-		alert("한줄평 에러.");
-	}
-}); // 한줄평 ajax
-
-
- $.ajax({
-	type:"Get",
-	url:"mdetail",
-	success:function(resultPage) {
-		$('#myinfo').html(resultPage);
-		},
-	error:function() {
-		alert("내정보 에러.");
-	}
-}); //myinfo ajax 처리
-
-
-$.ajax({
-	type:"Get",
-	url:"wishlist",
-	data:{id:'${loginID}',
-		searchType:'a'},
-	success:function(resultPage) {
-		$('#myWish').html(resultPage);
-		},
-	error:function() {
-		alert("찜영화 에러.");
-	}
-}); // 찜영화 ajax 처리
-
-
-$.ajax({
-	type:"Get",
-	url:"mdeleteF",
-	data:{
-		id:'${loginID}'},
-	success:function(resultPage) {
-		$('#quit').html(resultPage);
-		},
-	error:function() {
-		alert("회원탈퇴 에러.");
-	}
-}); //ajax */
-</script>
-
-
 <style type="text/css">
 
 .form-module input[type="button"] {
@@ -339,8 +290,8 @@ $.ajax({
 				<div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
 					<nav>
 						<ul class="nav navbar-nav">
-							<li class="active"><a href="home">Home</a></li>
-							<li><a href="qalist">고객센터</a></li>
+							<li ><a href="home">Home</a></li>
+							<li class="active"><a href="qalist">고객센터</a></li>
 							
 							<c:if test="${loginID=='admin'}">
 								<li><a href="editF">편집모드</a>
@@ -355,55 +306,52 @@ $.ajax({
 
 <!-- general -->
 	<div class="general">
-		<h4 class="latest-text w3_latest_text">내 정보</h4>
+		<h4 class="latest-text w3_latest_text">글 수정</h4>
 		<div class="container">
-			
-			<!-- 메뉴 탭화면 분류-->
-			<div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs">
-				<ul id="myTab" class="nav nav-tabs" role="tablist">
-					<!-- 주소에 #을 넣으면 해당 아이디로 찾아간다. 
-						class active는 해당 영역 활성화-->
-					<li role="presentation"  class="active"><a href="#myinfo" role="tab" id="myinfo-tab" data-toggle="tab" aria-controls="myinfo" aria-expanded="false">내 정보 수정</a></li>
-					<li role="presentation"><a href="#comment" id="comment-tab" role="tab" data-toggle="tab" aria-controls="comment" aria-expanded="true">한줄평 관리</a></li>
-					<li role="presentation"><a href="#myWish" id="myWish-tab" role="tab" data-toggle="tab" aria-controls="myWish" aria-expanded="true">나의 찜영화</a></li>
-					<li role="presentation"><a href="#quit" id="quit-tab" role="tab" data-toggle="tab" aria-controls="quit" aria-expanded="true">회원 탈퇴</a></li>
-				</ul>
-				
-				<%-- <a href="mdetail">내프로필</a><br>
-				<a href="myratings?id=${loginID}&searchType=w">내한줄평</a><br>
-				<a href="wishlist?id=${loginID}&searchType=a">찜한영화</a><br>
-				<a href="mdeleteF?id=${loginID}">회원탈퇴</a> --%>
-			
-				<!-- 탭화면 분류  -->
-				<div id="myTabContent" class="tab-content">
-					
-					<!-- 마이인포 -->
-					<div role="tabpanel" class="tab-pane fade active in" id="myinfo" aria-labelledby="myinfo-tab">
-						
-					</div>
-				
-					<!-- 한줄평 -->
-					<div role="tabpanel" class="tab-pane fade" id="comment" aria-labelledby="comment-tab">
-					
-					</div>
-				
-					<!-- 찜목록 -->
-					<div role="tabpanel" class="tab-pane fade" id="myWish" aria-labelledby="myWish-tab">
-					
-					</div>
-					
-					<!-- 회원탈퇴 -->
-					<div role="tabpanel" class="tab-pane fade" id="quit" aria-labelledby="quit-tab">
-					
-					</div>
-					
-				</div>
-				<!-- // div(myTabContent) -->
-				
-			</div>
-				<!-- 메뉴+영화박스 끝 -->
+		
+	<form action="qaUpdate" method="post">
+		<input type="hidden" name="seq" value="${Apple.seq}">
+		<input type="hidden" name="id" value="${loginID}">
+		
+		<div class="input-group w3_w3layouts">
+				<span class="input-group-addon" id="basic-addon1">글 제목</span>
+				<input class="col-lg-8" type="text" id="title" name="title" class="form-control" placeholder="글 제목을 입력해주세요." aria-describedby="basic-addon1" value="${Apple.title}">
 		</div>
-			<!-- //container -->
+		
+		<div class="input-group w3_w3layouts">
+				<span class="input-group-addon" id="basic-addon1" style="">글 내용</span>
+				<textarea name="content" id="content" style="height: 200px" placeholder="글 내용을 입력해주세요." class="col-lg-8">${Apple.content}</textarea>
+				<!-- <input type="text" name="content" style="height: 200px"  class="form-control" placeholder="글 내용을 입력해주세요." aria-describedby="basic-addon1"> -->
+		</div>
+			
+		<div class="input-group w3_w3layouts">
+		
+		<c:choose>
+			<c:when test="${Apple.secret=='N'}">
+				<span class="input-group-addon" id="basic-addon1">비밀글 여부</span> &nbsp;
+				<label for="secretN">공개</label>&nbsp;
+	    		<input type="radio" name="secret" id="secretN" value="N" checked />&nbsp;&nbsp;&nbsp;
+	    		<label for="secretY">비공개</label>&nbsp;
+	    		<input type="radio" name="secret" id="secretY" value="Y"  />
+			</c:when>
+		
+			<c:when test="${Apple.secret=='Y'}">
+				<span class="input-group-addon" id="basic-addon1">비밀글 여부</span> &nbsp;
+				<label for="secretN">공개</label>&nbsp;
+	    		<input type="radio" name="secret" id="secretN" value="N"  />&nbsp;&nbsp;&nbsp;
+	    		<label for="secretY">비공개</label>&nbsp;
+	    		<input type="radio" name="secret" id="secretY" value="Y"  checked/>
+	    	
+			</c:when>
+		</c:choose>
+
+		</div>
+		
+			<input type="submit" value="수정" onclick="return checkForm()">&nbsp;&nbsp;
+			<input type="button" onclick="history.go(-1)" value="뒤로가기">
+	</form>
+	</div>
+		<!-- //container -->
 		
 	</div>
 <!-- //general -->

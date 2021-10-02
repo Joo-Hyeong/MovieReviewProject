@@ -66,19 +66,36 @@ function passwordCheck(){
 			}
 }//passCheck
 
+function passwordCheck_find(){
+	var password=$('#password_find').val();
+			
+//패스워드 조건: 8~20자, 영문 숫자 특수문자 조합 
+			if (password.length<8||password.length>20) {
+				$('#pMessage').html('비밀번호는 8~20자 이내 입니다. ');
+				return false;
+			}else if (password.replace(/[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi,'').length == password.length
+			||password.replace(/[a-z]/gi,'').length == password.length
+			||password.replace(/[0-9]/gi,'').length == password.length) {
+				$('#pMessage').html('비밀번호는 반드시 영문, 숫자, 특수문자를 조합해주세요.');
+				return false;
+			}else {
+				$('#pMessage').html('');
+				return true;
+			}
+}//passCheck
+
+
 
 function password2Check(){
-	var password=$('#password').val();
+	var password=$('#password_find').val();
 	var password2=$('#password2').val();
 	if (password != password2) {
-		$('#p2Message').html('~~ password 가  다릅니다. 확인하세요  ~~');
+		$('#p2Message').html('password가 다릅니다. 다시 확인하세요.');
 		//$('#password').focus();
 		$('#p2OK').html('');
 		return false;
 	}else {
-		
-		$('#p2Message').html('');
-		$('#p2OK').html('OK').css({fontWeight:"bold",color:"green"});
+
 		return true;
 	}
 }
@@ -103,7 +120,7 @@ function nickNameCheck(){
 	
 		if(nickName.length<2||nickName.length>10){
 			$('#nMessage').html('닉네임은 2~10자 이내 입니다.');
-			$('#iMessage').css("color", "red");
+			$('#nMessage').css("color", "red");
 			return false;
 		}else{
 			$('#nMessage').html('');

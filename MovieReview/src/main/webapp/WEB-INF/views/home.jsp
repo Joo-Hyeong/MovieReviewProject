@@ -170,8 +170,10 @@ function login(){
 						alert('로그인 되었습니다.');
 						return location.reload();
 						
+					}else if(result.check=='F'){
+						$('#loginMessage').html('비밀번호가 틀렸습니다.');
 					}else{
-						$('#loginMessage').html('해당 회원 정보가 없습니다.');
+						$('#loginMessage').html('일치하는 정보가 없습니다.');
 					}
 				},
 				error:function(){
@@ -265,7 +267,8 @@ function passwordCheckLogin(){
 			<!-- 서치버튼 -->
 			<div class="w3_search">
 				<form action="search" method="post">
-					<input type="text" name="Search" placeholder="영화/감독/배우">
+					<input type="text" name="keyword" placeholder="영화/감독">
+					<input type="text" name="searchType" value="all" hidden="">
 					<input type="submit" value="검색">
 				</form>
 			</div>

@@ -56,7 +56,7 @@ $(function(){
 					
 					if(result=='n'){
 						$('#nMessage').html("이미 존재하는 닉네임입니다.");
-						$('#iMessage').css("color", "red");
+						$('#nMessage').css("color", "red");
 					}else{
 						$('#nMessage').html("사용할 수 있는 닉네임입니다.");
 						$('#nMessage').css("color", "green");
@@ -148,7 +148,7 @@ $(function(){
 	  	$(this).css({
 			fontSize:"1.1em",
 			fontWeight:"bold",
-			color:"red",
+			color:"#FF8D1B",
 			cursor:"pointer" }) //css
 	}, function(){
 		$(this).css({

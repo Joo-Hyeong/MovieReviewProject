@@ -12,8 +12,7 @@
   <choose>
      <when test="searchType=='all'.toString()">
         and (movie_title Like #{key}
-        or 	director Like #{key} 
-        or 	actor Like #{key} ))
+        or 	director Like #{key} ))
      </when>
      <otherwise>)</otherwise> 
   </choose>
@@ -27,21 +26,20 @@
  		
  		<select id="searchRowsCount" resultType="int">
   			<![CDATA[
-  				select count(distinct m.movie_num) from movie m, actor a where (m.movie_num=a.movie_num and m.movie_num> 0  ]]>
+  				select count(movie_num) from movie where (movie_num> 0  ]]>
   			<include refid="search"></include>
   		</select>
   	   
  	
  		<select id="searchList" resultType="VO.MovieVO">
- 		<![CDATA[
-  		Select distinct MOVIE_NUM, MOVIE_TITLE, DIRECTOR, RELEASE, POSTERFILE, TRAILER  
-  		from (select m.*, row_number() over(order by m.movie_num asc) rnum from movie m, actor a
-  		where m.movie_num = a.movie_num and m.movie_num >0  ]]>
-  		
+
+  		select m.*, nvl(rate_avg,0) rate_avg from (select movie.*, row_number() over(order by movie.movie_num asc) rnum from movie) m, 
+  		(select rating.movie_num, nvl(avg(rate),0) rate_avg from rating group by rating.movie_num) r 
+  		where (m.movie_num=r.movie_num(+)
   		<include refid="search"></include>	
-  		where rnum between #{sno} and #{eno}
+  		and (rnum between #{sno} and #{eno}) order by rate_avg desc
   		</select>
- 	
+
   		<!-- ** totalRowCount ** -->
   		<select id="totalRowCount" resultType="int">
   			select count(*) from movie
@@ -129,7 +127,7 @@
   		<select id="selectListRate" resultType="VO.MovieVO">
   		
   			select m.*, nvl(rate_avg,0) rate_avg from movie m, (select movie_num, nvl(avg(rate),0) rate_avg from rating group by movie_num) 
-  			r where m.movie_num=r.movie_num(+) order by r.rate_avg desc
+  			r where m.movie_num=r.movie_num(+) order by rate_avg desc
   		</select>
   		
   		 <select id="selectOne" resultType="VO.MovieVO">

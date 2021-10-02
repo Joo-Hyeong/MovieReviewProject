@@ -73,6 +73,12 @@
 		<!-- 조건문의 id : search -->
 		where rnum between #{sno} and #{eno}
 	</select>
+	<select id="searchNewRowsCount" resultType="int">
+	
+		select count(*) from qaboard where (answer='N' and id !='admin'
+		<include refid="search"></include>
+		<!-- 조건문의 id : search -->
+	</select>
 	
 	<select id="searchNewList" resultType="VO.QABoardVO">
 	<![CDATA[

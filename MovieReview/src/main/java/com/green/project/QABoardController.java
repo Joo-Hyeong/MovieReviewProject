@@ -13,10 +13,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+
 import VO.QABoardVO;
 import criForBoard.PageMaker;
 import criForBoard.SearchCriteria;
-
+import oracle.net.aso.m;
 import service.QABoardService;
 
 
@@ -47,26 +48,6 @@ public class QABoardController {
 		return mv;
 	} //bcplist 
 	
-	
-	// ** MYQA_Board PageList
-	@RequestMapping(value = "/myqalist")
-	public ModelAndView myqalist(ModelAndView mv, QABoardVO vo) {
-		
-		List<QABoardVO> list = service.myQAList(vo);
-		List<QABoardVO> list2 = new ArrayList<QABoardVO>();
-		if (list != null) {
-			for(int i=0;i<list.size();i++) {
-				vo.setRoot(list.get(i).getRoot());
-				list2.addAll(service.myQAList2(vo));
-			}
-			
-			mv.addObject("Banana", list2);
-		}else {
-			mv.addObject("message", "~~ 출력할 자료가 1건도 없습니다. ~~");
-		}
-		mv.setViewName("board/myQAList");
-		return mv;
-	} //myqalist
 	
 	
 	// ** QA_Board PageList
@@ -129,11 +110,23 @@ public class QABoardController {
 		return mv;
 	} //reply 
 	
+	@RequestMapping(value = "/qaUpdate")
+	public ModelAndView memberUpdate(ModelAndView mv, QABoardVO vo, HttpServletRequest request){
+
+		service.update(vo);
+
+		
+		mv.setViewName("redirect:qalist");
+
+		return mv;
+
+	}
 
 	@RequestMapping(value = "/qadetail")
 	public ModelAndView bdetail(HttpServletRequest request, ModelAndView mv, 
 			QABoardVO vo, RedirectAttributes rttr) {
 		
+
 		String loginID = null;
 		HttpSession session = request.getSession(false);
 		
@@ -148,10 +141,11 @@ public class QABoardController {
 		// 글내용 조회
 		vo = service.selectOne(vo);
 		if (vo != null) {
+		
 			request.setAttribute("Apple", vo);
 			// 글 수정 하기의 경우 
 			if ("U".equals(request.getParameter("jcode"))) {
-				mv.setViewName("board/bupdateForm");
+				mv.setViewName("board/qaUpdateForm");
 			}else mv.setViewName("board/qaBoardDetail");  
 		}else {
 			rttr.addFlashAttribute("message", "~~ 글번호에 해당하는 글을 찾을 수 없습니다 ~~");
@@ -175,7 +169,6 @@ public class QABoardController {
 	@RequestMapping(value = "/qainsert")
 	public ModelAndView qainsert(ModelAndView mv, QABoardVO vo, RedirectAttributes rttr) {
 
-		System.out.println(vo);
 		if ( service.insert(vo) > 0) {
 			rttr.addFlashAttribute("message", "~~ 새글 등록 성공 ~~");
 			mv.setViewName("redirect:qalist"); 

@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>** 비밀번호 변경 **</title>
+<title>비밀번호 변경 폼</title>
 <style type="text/css">
 
 </style>
@@ -16,34 +16,35 @@ var pCheck=false;
 var p2Check=false;
 
 $(function(){
-	$('#password').focus();
+	$('#password_find').focus();
  
-	$('#password').focusout(function() {
-		pCheck=passwordCheck();
+	$('#password_find').focusout(function() {
+		pCheck=passwordCheck_find();
 	}); //password_focusout
-	
-	$('#password2').keyup(function() {
-		p2Check=password2Check();
-	}); //password2_keypress
+
 	
 }); //ready
 
 function inCheck() {
 	// 개별적 오류 확인 : switch 변수
+	p2Check=password2Check();
+	
 	if (pCheck==false) {
-		$('#pMessage').html(' Password 를 확인하세요 ~~');
+		$('#pMessage1').html('Password 를 확인하세요.');
 	}
-	if (p2Check==false) {
-		$('#p2Message').html(' Password 를 확인하세요 ~~');
-	}
+	
 
 	if ( pCheck && p2Check ) {
 		   // 오류 확인 완료
-		  alert('입력 성공');
-		  opener.location.reload();
-		  self.close();
+		  alert('변경 성공');
+
 		  return true;  
-	}else return false;
+	}else{
+		
+		return false;
+	} 
+		
+		
 	
 } //inCheck
 </script>
@@ -60,7 +61,7 @@ function inCheck() {
 		<p>비밀번호</p>
 		</label>
 		<span>
-			<input type="password" id="password" name="password" maxlength="20">
+			<input type="password" id="password_find" name="password" maxlength="20">
 		</span><br>
 		<span id="pMessage" class="message"></span>
 	</div>

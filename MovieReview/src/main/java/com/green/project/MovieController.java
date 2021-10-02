@@ -296,8 +296,8 @@ public class MovieController {
 			pageMaker.setTotalRowCount(service.searchRowsCount(cri));
 
 			mv.addObject("pageMaker",pageMaker);	
-			
-			mv.addObject("message","총 "+service.searchRowsCount(cri)+"개의 영화를 찾았습니다.");
+			mv.addObject("keyword",cri.getKeyword());
+			mv.addObject("searchResult",service.searchRowsCount(cri));
 	
 		mv.setViewName("movie/searchF");
 		

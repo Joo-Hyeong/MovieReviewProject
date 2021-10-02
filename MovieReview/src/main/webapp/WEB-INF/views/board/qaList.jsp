@@ -201,18 +201,22 @@ function checkLogin(){
 	
 	if(id.length==0){
 		alert('로그인 후 이용해주세요.');
-		var url="loginSimpleF"
-		open(url,"_blank","toolbar=no,menubar=yes,scrollbars=yes,resizable=yes,width=500,height=400");
-		return false;
+	}else{
+
+		self.location="qalist"
+			+"${pageMaker.makeQuery(1)}"
+			+"&searchType="
+			+$('#searchType').val()
+			+'&keyword='
+			+id;
 	}
+	
 }//checkLogin
 
 function openInsertF(){
 	
 	if(id.length==0){
 			alert('로그인 후 이용해주세요.');
-			var url="loginSimpleF"
-			open(url,"_blank","toolbar=no,menubar=yes,scrollbars=yes,resizable=yes,width=500,height=400");
 		}else{
 			self.location="qainsertf";
 		}
@@ -259,6 +263,11 @@ function secretCheck(id_list,secret_list) {
 .message{
 	color: red;
 }
+
+.table>thead>tr>th{
+	color: white;
+
+}
 </style>
 
 </head>
@@ -274,7 +283,8 @@ function secretCheck(id_list,secret_list) {
 			<!-- 서치버튼 -->
 			<div class="w3_search">
 				<form action="search" method="post">
-					<input type="text" name="Search" placeholder="영화/감독/배우">
+					<input type="text" name="keyword" placeholder="영화/감독">
+					<input type="text" name="searchType" value="all" hidden="">
 					<input type="submit" value="검색">
 				</form>
 			</div>
@@ -369,15 +379,16 @@ function secretCheck(id_list,secret_list) {
 				<ul id="myTab" class="nav nav-tabs" role="tablist">
 					<!-- 주소에 #을 넣으면 해당 아이디로 찾아간다. 
 						class active는 해당 영역 활성화-->
-					<li role="presentation"  class="active"><a href="#qa" role="tab" id="qa-tab" data-toggle="tab" aria-controls="qa" aria-expanded="false">자주 묻는 질문</a></li>
-					<li role="presentation"><a href="#qaL" id="qaL-tab" role="tab" data-toggle="tab" aria-controls="qaL" aria-expanded="true">문의 게시판</a></li>
+					<li role="presentation" class="active"><a href="#qaL" id="qaL-tab" role="tab" data-toggle="tab" aria-controls="qaL" aria-expanded="true">문의 게시판</a></li>
+					<li role="presentation"><a href="#qa" role="tab" id="qa-tab" data-toggle="tab" aria-controls="qa" aria-expanded="false">자주 묻는 질문</a></li>
+					
 				</ul>
 				
 			<!-- 탭화면 분류 전체div -->
 				<div id="myTabContent" class="tab-content">
 					
 					<!-- 자주묻는질문 -->
-					<div role="tabpanel" class="tab-pane fade active in" id="qa" aria-labelledby="qa-tab">
+					<div role="tabpanel" class="tab-pane fade" id="qa" aria-labelledby="qa-tab">
 						<div class="panel-group w3l_panel_group_faq" id="accordion" role="tablist" aria-multiselectable="true">
 				
 				<!-- 첫번째 -->
@@ -420,21 +431,20 @@ function secretCheck(id_list,secret_list) {
 				
 				
 			<!-- 게시판 -->
-			<div role="tabpanel" class="tab-pane fade" id="qaL" aria-labelledby="qaL-tab">
+			<div role="tabpanel" class="tab-pane fade  active in" id="qaL" aria-labelledby="qaL-tab" align="center">
 
-<table>
-<tr height="40" style="
-	font-size: 100%;
-    font-family: 'Roboto Condensed', sans-serif;
-    color: white;
-    background: #FF8D1B;
-    
-    ">
+<table  class="table">
+<thead>
+<tr style="background: #FF8D1B;" id="tableTH">
 	<th>번호</th><th>제목</th><th>ID</th><th>등록일</th><th>조회수</th>
 </tr>
+</thead>
+
+<tbody>
 <c:forEach var="list" items="${Banana}"><tr height="40">
-	<td align="center">${list.seq}</td>
-	<td width="400">
+
+	<td>${list.seq}</td>
+	<td>
 		<!-- 답글 등록후 indent 에 따른 들여쓰기 
 			=> 답글인 경우에만 적용  -->
 		<c:if test="${list.indent>0}">
@@ -450,55 +460,70 @@ function secretCheck(id_list,secret_list) {
 			<a onclick="return secretCheck('${list.id}','${list.secret}')" href="qadetail?seq=${list.seq}&id=${list.id}">${list.title}</a>
 
 	</td>
-	<td>${list.id}</td><td>${list.regdate}</td><td align="center">${list.cnt}</td>
+	<td>${list.id}</td><td>${list.regdate}</td><td>${list.cnt}</td>
 </tr>
 
 </c:forEach>
-</table>
+</tbody>
+</table>		
+
 <br>
 <div id="searchBar">
 	<select name="searchType" id="searchType">
-		<option value="n" <c:out value="${pageMaker.cri.searchType==null ? 'selected':''}"/> >---</option>
+		<option value="n" <c:out value="${pageMaker.cri.searchType==null ? 'selected':''}"/> >모두 검색</option>
 		<option value="t" <c:out value="${pageMaker.cri.searchType=='t' ? 'selected':''}"/> >Title</option>
 		<option value="c" <c:out value="${pageMaker.cri.searchType=='c' ? 'selected':''}"/> >Content</option>
 		<option value="w" <c:out value="${pageMaker.cri.searchType=='w' ? 'selected':''}"/> >Writer(ID)</option>
 		<option value="tc" <c:out value="${pageMaker.cri.searchType=='tc' ? 'selected':''}"/> >Title or Content</option>
 		<option value="cw" <c:out value="${pageMaker.cri.searchType=='cw' ? 'selected':''}"/> >Content or Writer</option>
-		<option value="tcw" <c:out value="${pageMaker.cri.searchType=='tcw' ? 'selected':''}"/> >Title or Content or Writer</option>
 	</select>
 	<input type="text" name="keywordTop" id="keywordTop" value="${pageMaker.cri.keyword}">
-	<button id="searchBtn">Search</button>
+	<a class="label label-warning" id="searchBtn">Search</a>
 </div>
 <br><hr>
 <div align="center">
-	<!-- Paging 2 : Criteria 적용 
-		=> ver01 : pageMaker.makeQuery(?)
-		=> ver02 : pageMaker.searchQuery(?)
+
+	<nav>			
+	<ul class="pagination">	
 	
-		 1)  First << ,  Prev <  처리 -->
-	<c:if test="${pageMaker.prev && pageMaker.spageNo>1}">
-		<a href="qalist${pageMaker.searchQuery(1)}">1..</a>&nbsp;
-		<a href="qalist${pageMaker.searchQuery(pageMaker.spageNo-1)}">[<]</a>
-	</c:if>
+	<c:choose>
+		
+		<c:when test="${pageMaker.prev && pageMaker.spageNo>1}">
+			<li><a href="qalist${pageMaker.searchQuery(pageMaker.spageNo-1)}" aria-label="Previous"><span aria-hidden="true">«</span></a></li>				
+		</c:when>
+		<c:otherwise>
+			<li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
+		</c:otherwise>
+	</c:choose>	
+	
 	
 	<!-- 2) sPageNo ~ ePageNo 까지, displayPageNo 만큼 표시 -->
 	<c:forEach var="i" begin="${pageMaker.spageNo}" end="${pageMaker.epageNo}">
 		<c:if test="${i==pageMaker.cri.currPage}">
-			<font size="5" color="Orange">${i}</font>&nbsp;
+			<li class="active"><a href="#">${i}<span class="sr-only">(current)</span></a></li>
+						
 		</c:if>
 		<c:if test="${i!=pageMaker.cri.currPage}">
-			<a href="qalist${pageMaker.searchQuery(i)}">${i}</a>&nbsp;
+			<li><a href="qalist${pageMaker.searchQuery(i)}">${i}</a></li>
 		</c:if>
 	</c:forEach>
-	&nbsp;
 	<!-- 3) Next >  ,  Last >>  처리 -->
-	<c:if test="${pageMaker.next && pageMaker.epageNo>0}">
-		<a href="qalist${pageMaker.searchQuery(pageMaker.epageNo+1)}">[>]</a>&nbsp;
-		<a href="qalist${pageMaker.searchQuery(pageMaker.lastPageNo)}">..${pageMaker.lastPageNo}</a>&nbsp;&nbsp;
-	</c:if>
+	<c:choose>
+		
+		<c:when test="${pageMaker.next && pageMaker.epageNo>0}">
+			<li><a href="qalist${pageMaker.searchQuery(pageMaker.epageNo+1)}" aria-label="Next"><span aria-hidden="true">»</span></a></li>	
+		</c:when>
+		<c:otherwise>
+			<li class="disabled"><a href="#" aria-label="Next"><span aria-hidden="true">»</span></a></li>	
+		</c:otherwise>
+	</c:choose>	
+	</ul>
+
+	</nav>
 	<br>
 	<c:if test="${loginID!='admin'}">
-	<a href="myqalist?id=${loginID}" onclick="return checkLogin()">내 문의</a>&nbsp;&nbsp;
+	
+	<button onclick="checkLogin()">내 문의</button>
 	<button onclick="openInsertF()">문의하기</button><br>
 	</c:if>
 </div>

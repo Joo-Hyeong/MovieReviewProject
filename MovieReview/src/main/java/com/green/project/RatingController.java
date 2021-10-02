@@ -68,9 +68,7 @@ public class RatingController {
 			serviceR.delete(rvo);
 		}
 		
-		mv.setViewName("redirect:myratings?id="+
-				request.getSession().getAttribute("loginID")+
-					"&searchType=w"); //로그인 검사는 JS 또는 홈컨트롤러에서
+		mv.setViewName("redirect:myinfo");
 		return mv;
 	}//rdelete
 	

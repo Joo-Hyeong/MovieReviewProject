@@ -144,13 +144,10 @@ public class MemberController {
 		}
 		vo.setPassword(passwordEncoder.encode(vo.getPassword()));
 		
-		if (service.update(vo) > 0) {
-			rttr.addFlashAttribute("message", "~~ 정보 수정 성공 ~~");
-			mv.setViewName("redirect:myinfo");
-		}else {
-			rttr.addFlashAttribute("message", "~~ 정보수정 오류, 다시 하세요 ~~");
-			mv.setViewName("redirect:mdetail?id="+vo.getId()+"&jcode=U");
-		}
+		service.update(vo);
+		
+		mv.setViewName("home");
+		
 		return mv;
 	} //mupdate
 	
@@ -167,27 +164,26 @@ public class MemberController {
 		return mv;
 	} 
 	
-	@RequestMapping(value = "/mdelete")
-	public ModelAndView jsdelete(ModelAndView mv, MemberVO vo) {
-		
-		if (service.delete(vo) > 0) {
-			mv.addObject("success", "T");
-		}else {
-			mv.addObject("success", "F");
-		}
-		mv.setViewName("jsonView");
-		return mv;
-	}
+//	@RequestMapping(value = "/mdelete")
+//	public ModelAndView jsdelete(ModelAndView mv, MemberVO vo) {
+//		
+//		if (service.delete(vo) > 0) {
+//			mv.addObject("success", "T");
+//		}else {
+//			mv.addObject("success", "F");
+//		}
+//		mv.setViewName("jsonView");
+//		return mv;
+//	}
 	
 	@RequestMapping(value = "/mDelete")
 	public ModelAndView mdelete(ModelAndView mv, MemberVO vo,HttpServletRequest request) {
 		HttpSession session = request.getSession();
-		if (service.delete(vo) <= 0) {
-			mv.setViewName("myInfo/mDelete");
+		if (service.delete(vo) <1) {
+			mv.setViewName("redirect:myinfo");
 		} else {
 			session.invalidate();
-			mv.setViewName("redirect:home");
-			
+			mv.setViewName("redirect:home");	
 		}
 		
 		return mv;
@@ -268,7 +264,7 @@ public class MemberController {
 		
 	
 		String password = vo.getPassword();
-		
+
 		vo= service.selectOne(vo);
 
 		if(vo!=null) {
@@ -279,6 +275,8 @@ public class MemberController {
 				session.setAttribute("loginID", vo.getId());
 				session.setAttribute("loginNickName", vo.getNickName());
 				mv.addObject("check",'T');			
+			}else {
+				mv.addObject("check",'F');
 			}
 		
 		}

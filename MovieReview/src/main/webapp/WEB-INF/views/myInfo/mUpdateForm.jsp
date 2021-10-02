@@ -89,7 +89,7 @@ function checkForm(){
 </script>
 </head>
 <body>
-
+<div>
 <form action="mupdate" method="post">
 	<input type="text" id="id" name="id" value="${Apple.id}" hidden>
 	<input type="text" id="password" name="password" value="${Apple.password}" hidden>
@@ -153,7 +153,7 @@ function checkForm(){
 	
 	</div>
 	<!-- //content  -->
-</div>
+
 
 </body>
 </html>
