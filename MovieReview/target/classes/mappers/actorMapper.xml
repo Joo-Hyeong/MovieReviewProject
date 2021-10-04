@@ -34,7 +34,7 @@
   		</insert>  		
   		
   		<update id="update">
-  		update actor set movie_num=#{movie_num},actor=#{actor} where actor=#{actor} 
+  		update actor set actor=#{actor} where actor=#{actor} and movie_num=#{movie_num}
   		</update>
   		
   		<delete id="delete">

@@ -22,3 +22,8 @@ Alter table member add constraint uniqueNick unique (nickname);
 -창우
 고객센터 게시판(QABoard) 추가 
 
+
+// 
+
+Db 수정사항 ---> 참조키 설정된 테이블은 제약조건을 delete on cascade 로 바꿔줌
+

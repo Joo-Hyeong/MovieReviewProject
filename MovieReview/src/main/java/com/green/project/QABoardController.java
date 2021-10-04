@@ -28,25 +28,7 @@ public class QABoardController {
 	QABoardService service;
 	
 	
-	
-	@RequestMapping(value = "/qaAnswer")
-	public ModelAndView qaAnswer(ModelAndView mv, SearchCriteria cri, PageMaker pageMaker) {
 
-		cri.setSnoEno();
-		
-		mv.addObject("newQa",service.searchNewList(cri));
-		
-		pageMaker.setCri(cri);
-		
-
-		pageMaker.setTotalRowCount(service.searchNewRowsCount(cri));
-
-		mv.addObject("pageMaker",pageMaker);
-		
-		mv.setViewName("board/qaAnswerF");
-		
-		return mv;
-	} //bcplist 
 	
 	
 	
@@ -95,18 +77,11 @@ public class QABoardController {
 			vo.setSeq(seq);
 			vo=service.selectOne(vo);
 			service.updateNtoY(vo);
-			
-			rttr.addFlashAttribute("message", "~~ 답글 등록 성공 ~~");
-		}else { // 답글 입력 실패
-			rttr.addFlashAttribute("message", "~~ 답글 등록 실패 ~~");
+
 		}
-		
-		if("Y".equals(adminMod)) {
-			mv.setViewName("redirect:qaAnswer");
-		}else {
+
 			mv.setViewName("redirect:qalist");
-		}
-		
+
 		return mv;
 	} //reply 
 	

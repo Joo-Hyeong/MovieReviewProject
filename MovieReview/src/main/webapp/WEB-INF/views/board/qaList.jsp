@@ -243,6 +243,8 @@ function secretCheck(id_list,secret_list) {
 
 <style type="text/css">
 
+
+
 .form-module input[type="button"] {
 	background: #919191;
     width: 100%;
@@ -270,9 +272,32 @@ function secretCheck(id_list,secret_list) {
 }
 </style>
 
+<!-- footer메뉴바 고정 -->
+<style type="text/css">
+
+.wrap {
+position: relative;
+min-height: 100vh;
+}
+
+.general {
+padding-bottom: 150px; /* 푸터 높이 */
+}
+
+.footer {
+position: absolute;
+bottom: 0;
+width: 100%;
+height: 150px; /* 푸터 높이 */
+}
+
+
+</style>
+
 </head>
 	
 <body>
+<div class="wrap">
 <!-- header -->
 	<div class="header">
 		<div class="container">
@@ -358,7 +383,9 @@ function secretCheck(id_list,secret_list) {
 							<li class="active"><a href="qalist">고객센터</a></li>
 							
 							<c:if test="${loginID=='admin'}">
-								<li><a href="editF">편집모드</a>
+								<li><a href="addMovieMenu">영화 추가</a>
+								<li><a href="memberUpdateMenu">회원 관리</a>
+								<li><a href="qaAnswerMenu">고객문의 답변</a>
 							</c:if>
 							
 						</ul>
@@ -435,7 +462,7 @@ function secretCheck(id_list,secret_list) {
 
 <table  class="table">
 <thead>
-<tr style="background: #FF8D1B;" id="tableTH">
+<tr style="background: #FF8D1B;" id="tableTH" >
 	<th>번호</th><th>제목</th><th>ID</th><th>등록일</th><th>조회수</th>
 </tr>
 </thead>
@@ -470,7 +497,7 @@ function secretCheck(id_list,secret_list) {
 <br>
 <div id="searchBar">
 	<select name="searchType" id="searchType">
-		<option value="n" <c:out value="${pageMaker.cri.searchType==null ? 'selected':''}"/> >모두 검색</option>
+		<option value="n" <c:out value="${pageMaker.cri.searchType==null ? 'selected':''}"/> >- 선택 -</option>
 		<option value="t" <c:out value="${pageMaker.cri.searchType=='t' ? 'selected':''}"/> >Title</option>
 		<option value="c" <c:out value="${pageMaker.cri.searchType=='c' ? 'selected':''}"/> >Content</option>
 		<option value="w" <c:out value="${pageMaker.cri.searchType=='w' ? 'selected':''}"/> >Writer(ID)</option>
@@ -599,5 +626,8 @@ $(document).ready(function(){
 			});
 	</script>
 <!-- //here ends scrolling icon -->
+
+</div>
+
 </body>
 </html>

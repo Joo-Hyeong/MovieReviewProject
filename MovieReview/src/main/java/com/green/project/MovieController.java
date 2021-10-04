@@ -2,6 +2,7 @@ package com.green.project;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -40,12 +41,10 @@ public class MovieController {
 
 	
 	@RequestMapping(value = "/editMovie")
-	public ModelAndView editMovie(ModelAndView mv, MovieVO mvo, ActorVO avo,HttpServletRequest request) throws IllegalStateException, IOException {
-		
+	public ModelAndView editMovie(ModelAndView mv, MovieVO mvo, HttpServletRequest request) throws IllegalStateException, IOException {
 		
 		String realPath= request.getRealPath("/");
 		
-//		이부분은 창우씨꺼에서는 고쳐야합니다!
 		if(realPath.contains(".eclipse.")) {
 			realPath = "/Users/leejoohyeoung/IdeaProjects/eclipse/ProjectFolder/MovieReviewProject/MovieReview/src/main/webapp/resources/posterImage/";	
 		}else {
@@ -71,35 +70,20 @@ public class MovieController {
 			file1= realPath+ posterfilef.getOriginalFilename();
 			posterfilef.transferTo(new File(file1));
 			file2= "resources/posterImage/"+posterfilef.getOriginalFilename();	
-		}
-		
-		mvo.setPosterfile(file2);
-		
-		String[] actor = request.getParameterValues("actor");
-	
-		
-		if(service.update(mvo)>0) {
 			
-			// 방금 insert한 movie의 movie_num을 찾음
-			mvo=service.findMovieNum(mvo);
 			
-			avo.setMovie_num(mvo.getMovie_num());
-			
-			for(int i=0 ; i<actor.length ; i++) {
-				avo.setActor(actor[i]);
-				serviceA.update(avo);
-			}
-			
-			mv.addObject("message","영화수정에 성공했습니다.");
-			
+			mvo.setPosterfile(file2);
 			
 		}else {
-
-			mv.addObject("message","영화수정에 실패했습니다.");
+			
+			mvo.setPosterfile(service.selectOne(mvo).getPosterfile());
 			
 		}
 		
-		mv.setViewName("edit/editF");
+		service.update(mvo);
+
+		mv.setViewName("home");
+		
 		return mv;
 	}
 	
@@ -107,6 +91,8 @@ public class MovieController {
 	@RequestMapping(value = "/movieEditF")
 	public ModelAndView movieEditF(ModelAndView mv, MovieVO mvo, ActorVO avo, criForRating.PageMaker pageMaker, criForRating.SearchCriteria cri) {
 
+		
+	
 
 			mvo = service.selectOne(mvo);
 	      if (mvo != null){ mv.addObject("Movie", mvo);
@@ -179,15 +165,14 @@ public class MovieController {
 				serviceA.insert(avo);
 			}
 			
-			mv.addObject("message","영화추가에 성공했습니다.");
-			mv.setViewName("edit/editF");
-			
+			mv.setViewName("home");	
+
 		}else {
-
-			mv.setViewName("edit/movieAdd");
 			
+			mv.setViewName("edit/addMovieMenu");	
 		}
-
+		
+			
 		return mv;
 	}
 	
@@ -268,12 +253,7 @@ public class MovieController {
 
 			int rating = serviceR.ratingAverage(rvo);
 			
-			if(rating == 0) {
-				mv.addObject("rating", "아직 등록된 평점이 없습니다." );
-			}else {
-				mv.addObject("rating", rating+" 점");
-			}
-			
+			mv.addObject("rating", rating);
 
 			mv.setViewName("movie/movieDetail");
 			return mv;
@@ -305,6 +285,7 @@ public class MovieController {
 
 	}
 	
+
 
 	
 } //class

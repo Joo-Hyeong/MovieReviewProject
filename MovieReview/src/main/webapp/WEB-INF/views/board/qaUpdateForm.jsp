@@ -206,9 +206,34 @@ function checkForm(){
 }
 </style>
 
+<!-- footer메뉴바 고정 -->
+<style type="text/css">
+
+.wrap {
+position: relative;
+min-height: 100vh;
+}
+
+.general {
+padding-bottom: 150px; /* 푸터 높이 */
+}
+
+.footer {
+position: absolute;
+bottom: 0;
+width: 100%;
+height: 150px; /* 푸터 높이 */
+}
+
+
+</style>
+
+
 </head>
 	
 <body>
+<div class="wrap">
+
 <!-- header -->
 	<div class="header">
 		<div class="container">
@@ -294,7 +319,9 @@ function checkForm(){
 							<li class="active"><a href="qalist">고객센터</a></li>
 							
 							<c:if test="${loginID=='admin'}">
-								<li><a href="editF">편집모드</a>
+								<li><a href="addMovieMenu">영화 추가</a>
+								<li><a href="memberUpdateMenu">회원 관리</a>
+								<li><a href="qaAnswerMenu">고객문의 답변</a>
 							</c:if>
 							
 						</ul>
@@ -413,5 +440,6 @@ $(document).ready(function(){
 			});
 	</script>
 <!-- //here ends scrolling icon -->
+</div>
 </body>
 </html>

@@ -61,7 +61,11 @@ public class WishController {
 		
 		vo = service.selectOne(vo);
 		
-		if (vo != null){ mv.addObject("Apple", vo);
+		if (vo != null){ 
+			
+			mv.addObject("Apple", vo);
+			
+			
 		} else {
 
 			
@@ -71,17 +75,25 @@ public class WishController {
 		cri.setSnoEno();
 		
 		List<WishVO> listW = serviceW.searchList(cri);
-		List<MovieVO> listM = new ArrayList<MovieVO>();
+		
+		if(listW.isEmpty()) {
+			mv.addObject("messageHome", "찜 목록에 등록된 영화가 없습니다.");
+		}else {
+			List<MovieVO> listM = new ArrayList<MovieVO>();
 		for(int i=0;i<listW.size();i++) {
 			mvo.setMovie_num(listW.get(i).getMovie_num());
 			listM.add(serviceM.selectOne(mvo));    
 		}
+		
 		mv.addObject("Banana", listM);
 		
 		pageMaker.setCri(cri);
 		pageMaker.setTotalRowCount(serviceW.searchRowsCount(cri));
 		
 		mv.addObject("pageMaker",pageMaker);
+		}
+		
+		
 		
 		if("wish".equals(orderID)) 
 			 mv.setViewName("movie/movieList2");

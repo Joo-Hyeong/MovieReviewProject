@@ -7,7 +7,7 @@
 <html>
 <html lang="en">
 <head>
-<title>그린 영화리뷰 홈</title>
+<title>회원정보 관리</title>
 <!-- for-mobile-apps -->
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -85,8 +85,40 @@ $(function(){
 		
 		});
 
+	// SearchType 이 '---' 면 keyword 클리어
+	$('#searchType').change(function() {
+		if ($(this).val()=='n') $('#topKeyword').val('');
+	}); //change
+	// 검색후 요청
+	
+	
+	
+	$('#searchBtn').on("click", function() {
+		
+		self.location="memberUpdateMenu"
+			+"${pageMaker.makeQuery(1)}"
+			+"&searchType="
+			+$('#searchType').val()
+			+'&Keyword='
+			+$('#topKeyword').val()
+	}); //on_click
+	
+	
 });//ready
 
+function memberDetail(id) {
+	$.ajax({
+		type: 'Get',
+		url:'memberUpdateF?id='+id,
+		
+		success:function(resultPage){
+			$('#updateMemberF').html(resultPage);
+		},
+		error:function(){
+			alert('서버 오류. 관리자에게 문의해주세요.');
+		}
+	}); //ajax
+}
 
 function login(){
 	
@@ -195,9 +227,47 @@ function passwordCheckLogin(){
 }
 </style>
 
+<!-- footer메뉴바 고정 -->
+<style type="text/css">
+
+.wrap {
+position: relative;
+min-height: 100vh;
+}
+
+.general {
+padding-bottom: 2.5rem; /* 푸터 높이 */
+}
+
+.footer {
+position: absolute;
+bottom: 0;
+width: 100%;
+height: 2.5rem; /* 푸터 높이 */
+}
+
+
+	#searchMember, #updateMember{
+	
+		float: left;
+		height: 600px;
+		width: 548px;
+		border: 1px solid black;
+		
+	}
+
+	#memberTH> th{
+		text-align: center;
+		color: white;
+	
+	}
+</style>
+
 </head>
 	
 <body>
+
+<div class="wrap">
 <!-- header -->
 	<div class="header">
 		<div class="container">
@@ -279,11 +349,13 @@ function passwordCheckLogin(){
 				<div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
 					<nav>
 						<ul class="nav navbar-nav">
-							<li class="active"><a href="home">Home</a></li>
+							<li><a href="home">Home</a></li>
 							<li><a href="qalist">고객센터</a></li>
 							
 							<c:if test="${loginID=='admin'}">
-								<li><a href="editF">편집모드</a>
+								<li><a href="addMovieMenu">영화 추가</a>
+								<li class="active"><a href="memberUpdateMenu">회원 관리</a>
+								<li><a href="qaAnswerMenu">고객문의 답변</a>
 							</c:if>
 							
 						</ul>
@@ -295,13 +367,75 @@ function passwordCheckLogin(){
 
 <!-- general -->
 	<div class="general">
-		<h4 class="latest-text w3_latest_text"> 해당 메뉴</h4>
+		<h4 class="latest-text w3_latest_text">회원 관리</h4>
 		<div class="container">
 			
-			
+			<div id="searchMember">
+
+<h2>회원 목록</h2>
+<br>
+<br>
+<br><hr>
+<br>
+<table border="1"  style="margin-left: auto; margin-right: auto; width: 500px;">
+<tr height="30" bgcolor="#FF8D1B" id="memberTH">
+	<th>아이디</th><th>이메일</th><th>닉네임</th><th>등급</th>	<th>추천인</th>
+</tr>
+<c:forEach var="list" items="${memberList}">
+<tr height="30" align="center">
+	<td><a href="javascript:void(0);" onclick="memberDetail('${list.id}')">${list.id}</a></td><td>${list.email}</td><td>${list.nickName}</td><td>${list.grade}</td>
+	<td>${list.rid}</td>
+</tr>
+</c:forEach>
+</table>
+<br>
+<div id="topSearchBar" style="margin-left: auto; margin-right: auto; width: 300px;">
+	<select name="searchType" id="searchType" >
+		<option value="n" <c:out value="${pageMaker.cri.searchType==null ? 'selected':''}"/> >---</option>
+		<option value="a" <c:out value="${pageMaker.cri.searchType=='a' ? 'selected':''}"/> >전체</option>
+		<option value="i" <c:out value="${pageMaker.cri.searchType=='i' ? 'selected':''}"/> >ID</option>
+		<option value="nn" <c:out value="${pageMaker.cri.searchType=='nn' ? 'selected':''}"/> >NickName</option>
+	</select>
+	<input type="text" name="topKeyword" id="topKeyword" value="${pageMaker.cri.keyword}">
+	<a class="label label-warning" id="searchBtn">Search</a>
+</div>
+<br><hr>
+<div align="center">
+	<!-- Paging 2 : SearchCriteria 적용 
+		 1)  First << ,  Prev <  처리 -->
+	<c:if test="${pageMaker.prev && pageMaker.spageNo>1}">
+		<a href="memberUpdateMenu${pageMaker.searchQuery(1)}">FF</a>&nbsp;
+		<a href="memberUpdateMenu${pageMaker.searchQuery(pageMaker.spageNo-1)}">Prev</a>
+	</c:if>
+	<!-- 2) sPageNo ~ ePageNo 까지, displayPageNo 만큼 표시 -->
+	<c:forEach var="i" begin="${pageMaker.spageNo}" end="${pageMaker.epageNo}">
+		<c:if test="${i==pageMaker.cri.currPage}">
+			<font size="5" color="Orange">${i}</font>&nbsp;
+		</c:if>
+		<c:if test="${i!=pageMaker.cri.currPage}">
+			<a href="memberUpdateMenu${pageMaker.searchQuery(i)}">${i}</a>&nbsp;
+		</c:if>
+	</c:forEach>
+	&nbsp;
+	<!-- 3) Next >  ,  Last >>  처리 -->
+	<c:if test="${pageMaker.next && pageMaker.epageNo>0}">
+		<a href="memberUpdateMenu${pageMaker.searchQuery(pageMaker.epageNo+1)}">Next</a>&nbsp;
+		<a href="memberUpdateMenu${pageMaker.searchQuery(pageMaker.lastPageNo)}">LL</a>&nbsp;&nbsp;
+	</c:if>
+</div>
+</div> <!-- searchMember -->
+<div id="updateMember">
+<h2>회원정보 수정</h2>
+<br>
+<br>
+<div id="updateMemberF" style="text-align: center; margin: 0 auto;"></div>
+</div>
+							
 		</div>
 			<!-- //container -->
-		
+<br><br>
+<br><br>
+<br><br>			
 	</div>
 <!-- //general -->
 
@@ -362,5 +496,6 @@ $(document).ready(function(){
 			});
 	</script>
 <!-- //here ends scrolling icon -->
+</div>
 </body>
 </html>

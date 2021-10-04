@@ -195,9 +195,33 @@ function passwordCheckLogin(){
 }
 </style>
 
+<!-- footer메뉴바 고정 -->
+<style type="text/css">
+
+.wrap {
+position: relative;
+min-height: 100vh;
+}
+
+.general {
+padding-bottom: 150px; /* 푸터 높이 */
+}
+
+.footer {
+position: absolute;
+bottom: 0;
+width: 100%;
+height: 150px; /* 푸터 높이 */
+}
+
+
+</style>
+
+
 </head>
 	
 <body>
+<div class="wrap">
 <!-- header -->
 	<div class="header">
 		<div class="container">
@@ -283,7 +307,9 @@ function passwordCheckLogin(){
 							<li><a href="qalist">고객센터</a></li>
 							
 							<c:if test="${loginID=='admin'}">
-								<li><a href="editF">편집모드</a>
+								<li><a href="addMovieMenu">영화 추가</a>
+								<li><a href="memberUpdateMenu">회원 관리</a>
+								<li><a href="qaAnswerMenu">고객문의 답변</a>
 							</c:if>
 							
 						</ul>
@@ -327,11 +353,13 @@ function passwordCheckLogin(){
 								  <c:forEach var="list" items="${movieList}" varStatus="status">
 									<c:choose>
 										<c:when test="${loginID=='admin'}">
-											<div style="float:left; margin: 40px">
-												<a href="movieEditF?movie_num=${list.movie_num}&searchType=n"><img src="${list.posterfile}" style="width: 46px; height: 69px;">
-												<br>${list.movie_title}
-												</a>
-											</div>
+										<tr>
+											<td>${status.index+1}</td>
+											<td class="w3-list-img"><a href="movieEditF?movie_num=${list.movie_num}&searchType=n"><img src="${list.posterfile}"  style="width: 46px; height: 69px;"/> <span>${list.movie_title}</span></a></td>
+											<td>${list.release}</td>
+											<td>${list.director}</td>
+											<td>${list.rate_avg}</td>
+										</tr>
 										</c:when>
 		
 										<c:otherwise>
@@ -359,7 +387,7 @@ function passwordCheckLogin(){
 	<c:choose>
 		
 		<c:when test="${pageMaker.prev && pageMaker.spageNo>1}">
-			<li><a href="qalist${pageMaker.searchQuery(pageMaker.spageNo-1)}" aria-label="Previous"><span aria-hidden="true">«</span></a></li>				
+			<li><a href="search${pageMaker.searchQuery(pageMaker.spageNo-1)}" aria-label="Previous"><span aria-hidden="true">«</span></a></li>				
 		</c:when>
 		<c:otherwise>
 			<li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
@@ -374,14 +402,14 @@ function passwordCheckLogin(){
 						
 		</c:if>
 		<c:if test="${i!=pageMaker.cri.currPage}">
-			<li><a href="qalist${pageMaker.searchQuery(i)}">${i}</a></li>
+			<li><a href="search${pageMaker.searchQuery(i)}">${i}</a></li>
 		</c:if>
 	</c:forEach>
 	<!-- 3) Next >  ,  Last >>  처리 -->
 	<c:choose>
 		
 		<c:when test="${pageMaker.next && pageMaker.epageNo>0}">
-			<li><a href="qalist${pageMaker.searchQuery(pageMaker.epageNo+1)}" aria-label="Next"><span aria-hidden="true">»</span></a></li>	
+			<li><a href="search${pageMaker.searchQuery(pageMaker.epageNo+1)}" aria-label="Next"><span aria-hidden="true">»</span></a></li>	
 		</c:when>
 		<c:otherwise>
 			<li class="disabled"><a href="#" aria-label="Next"><span aria-hidden="true">»</span></a></li>	
@@ -455,5 +483,6 @@ $(document).ready(function(){
 			});
 	</script>
 <!-- //here ends scrolling icon -->
+</div>
 </body>
 </html>

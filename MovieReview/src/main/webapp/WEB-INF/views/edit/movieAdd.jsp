@@ -94,11 +94,7 @@ function inCheck(){
 </script>
 </head>
 <body>
-
-<div id="header">
-<h2>영화 추가 입력폼</h2>
-</div>
-								
+							
 <div id="container">
 
 <div id="content">
@@ -167,12 +163,9 @@ function inCheck(){
 		</label>
 		<span>
 			<input type="text" id="trailer" name="trailer">
-		</span><br>
-	</div><br>
-	
-	
-	
-	
+		</span>
+	</div>
+	<br>
 	<div>
 		<span>
 			<input type="button" id="add" value="등록">&nbsp;
@@ -184,57 +177,17 @@ function inCheck(){
 
 
 </form>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 </div>
 <!-- //content -->
 
 </div> 
 <!-- //container -->
-<div id="footer"><!-- footer -->
-	
-	<div id="search" hidden="true" >
-	
-		<div id="search1">
-			<form action="search" method="get" id="searchF">
-				<input type="text" placeholder="검색어를 입력해주세요." name="keyword" id="keyword">
-				<input type="text" value="all" name="searchType" hidden="true">
-			</form>
-		</div>
-		
-		<div id="search2">
-			<button id="searchButton">
-				<img src="resources/image/search.jpg" id="searchImg">
-			</button>
-		</div>
 
-		
-	</div>
-
-	<c:if test="${loginID==null}">
-	<div id="menu1" class="footmenu"><a href="loginF">로그인</a></div>
-	</c:if>
-	<c:if test="${loginID!=null}">
-	<div id="menu1" class="footmenu"><a href="logout">로그아웃</a></div>
-	</c:if>
-	
-	<c:choose>
-		<c:when test="${loginID==null}">
-			<div id="menu2" class="footmenu"><a href="joinA">회원가입</a></div>
-		</c:when>
-		
-		<c:when test="${loginID=='admin'}">
-			<div id="menu2" class="footmenu"><a href="editF">편집모드</a></div>
-		</c:when>
-		
-		<c:otherwise>
-			<div id="menu2" class="footmenu"><a href="myinfo">내 정보</a></div>
-		</c:otherwise>
-	</c:choose>
-
-	
-	<div id="menu3" class="footmenu"><a href="home">홈</a></div>
-	<div id="menu4" class="footmenu"><a href="#" onclick="openSearch()">검색</a></div>
-	<div id="menu5" class="footmenu"><a href="qalist">고객센터</a></div>
-	
-</div><!-- //footer -->
 </body>
 </html>

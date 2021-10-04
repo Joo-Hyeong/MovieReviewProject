@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import VO.MemberVO;
-
+import VO.MovieVO;
 import VO.RatingVO;
 import service.MemberService;
 import service.RatingService;
@@ -20,6 +20,18 @@ public class RatingController {
 	MemberService service;
 	@Autowired
 	RatingService serviceR ;
+
+	
+	@RequestMapping(value = "/inputRatingF")
+	public ModelAndView inputRatingF(ModelAndView mv, MovieVO vo) {
+		
+		mv.addObject("Movie", vo);
+		
+		mv.setViewName("movie/inputRatingF");
+		
+		return mv;
+	}//rdelete
+	
 	
 	
 	@RequestMapping(value = "/addRating")

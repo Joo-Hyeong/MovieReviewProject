@@ -13,27 +13,6 @@
 
 <script>
 
-function openSearch(){
-	$('#search').toggle();
-}
-
-$(document).keydown(function(e) {
-    if ( e.keyCode == 27 || e.which == 27 ) {
-    	if($('#search').is(':visible')){
-    		$('#search').toggle();
-    	}
-    }//esc 누르면 서치창 꺼지게
-    
-    if ( e.keyCode == 13 || e.which == 13 ) {
-    	if($('#search').is(':visible')){
-    		$("#searchF").submit();
-    	}
-    }//엔터키 누르면 검색 실행
-  
-    
-}); 
-
-
 $(function() {	
 	// SearchType 이 '---' 면 keyword 클리어
 	$('#searchType').change(function() {
@@ -41,7 +20,8 @@ $(function() {
 	}); //change
 	// 검색후 요청
 	$('#searchBtn').on("click", function() {
-		self.location="memberList"
+		
+		self.location="memberUpdateMenu"
 			+"${pageMaker.makeQuery(1)}"
 			+"&searchType="
 			+$('#searchType').val()
@@ -50,10 +30,7 @@ $(function() {
 	}); //on_click
 	
 	
-	$('#searchButton').click(function(){
-		$("#searchF").submit();
-	});	
-	
+
 }) //ready
 
 function memberDetail(id) {
@@ -75,19 +52,21 @@ function memberDetail(id) {
 	#searchMember, #updateMember{
 	
 		float: left;
-		height: 700px;
-		width: 698px;
+		height: 600px;
+		width: 548px;
 		border: 1px solid black;
 		
 	}
 
+	#memberTH> th{
+		text-align: center;
+		color: white;
+	
+	}
 </style>
 </head>
 <body>
-<h2 align="center">회원 정보관리</h2>
-<br>
-<br>
-<div id="container" style="margin: 0 auto; width:1400px; height:700px;" >
+<div id="container" style="margin: 0 auto; width:1100px; height:600px;" >
 
 <div id="searchMember">
 
@@ -97,7 +76,7 @@ function memberDetail(id) {
 <br><hr>
 <br>
 <table border="1"  style="margin-left: auto; margin-right: auto; width: 500px;">
-<tr height="30" bgcolor="Azure">
+<tr height="30" bgcolor="#FF8D1B" id="memberTH">
 	<th>아이디</th><th>이메일</th><th>닉네임</th><th>등급</th>	<th>추천인</th>
 </tr>
 <c:forEach var="list" items="${memberList}">
@@ -149,55 +128,11 @@ function memberDetail(id) {
 <br>
 <div id="updateMemberF" style="text-align: center; margin: 0 auto;"></div>
 </div>
-
 </div><!-- //container -->
-
-<div id="footer"><!-- footer -->
-	
-	<div id="search" hidden="true" >
-	
-		<div id="search1">
-			<form action="search" method="get" id="searchF">
-				<input type="text" placeholder="검색어를 입력해주세요." name="keyword" id="keyword">
-				<input type="text" value="all" name="searchType" hidden="true">
-			</form>
-		</div>
-		
-		<div id="search2">
-			<button id="searchButton">
-				<img src="resources/image/search.jpg" id="searchImg">
-			</button>
-		</div>
-
-		
-	</div>
-
-	<c:if test="${loginID==null}">
-	<div id="menu1" class="footmenu"><a href="loginF">로그인</a></div>
-	</c:if>
-	<c:if test="${loginID!=null}">
-	<div id="menu1" class="footmenu"><a href="logout">로그아웃</a></div>
-	</c:if>
-	
-	<c:choose>
-		<c:when test="${loginID==null}">
-			<div id="menu2" class="footmenu"><a href="joinA">회원가입</a></div>
-		</c:when>
-		
-		<c:when test="${loginID=='admin'}">
-			<div id="menu2" class="footmenu"><a href="editF">편집모드</a></div>
-		</c:when>
-		
-		<c:otherwise>
-			<div id="menu2" class="footmenu"><a href="myinfo">내 정보</a></div>
-		</c:otherwise>
-	</c:choose>
-
-	
-	<div id="menu3" class="footmenu"><a href="home">홈</a></div>
-	<div id="menu4" class="footmenu"><a href="#" onclick="openSearch()">검색</a></div>
-	<div id="menu5" class="footmenu"><a href="qalist">고객센터</a></div>
-	
-</div><!-- //footer -->
+<br>
+<br>
+<br>
+<br>
+<br>
 </body>
 </html>

@@ -3,7 +3,6 @@ package com.green.project;
 
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -18,8 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import VO.MemberVO;
-import criForMember.PageMaker;
-import criForMember.SearchCriteria;
+
 import service.MemberService;
 import service.RatingService;
 
@@ -67,22 +65,7 @@ public class MemberController {
 		return mv;
 		
 	}
-	
-	@RequestMapping(value = "/memberList")
-	public ModelAndView mcplist(ModelAndView mv, SearchCriteria cri, PageMaker pageMaker) {
-		// 1) Criteria 처리
-		cri.setSnoEno();
-		// 2) 서비스 처리
-		mv.addObject("memberList",service.searchList(cri));
-		// 3) PageMaker 처리
-		pageMaker.setCri(cri);
-		pageMaker.setTotalRowCount(service.searchRowsCount(cri));
-		
-		mv.addObject("pageMaker",pageMaker);
-		mv.setViewName("member/memberList");
-		return mv;
-	} 
-	
+
 	@RequestMapping(value = "/mupdatef")
 	public ModelAndView mupdatef(ModelAndView mv,MemberVO vo) {
 		mv.addObject("Apple", service.selectOne(vo));
@@ -151,30 +134,7 @@ public class MemberController {
 		return mv;
 	} //mupdate
 	
-	@RequestMapping(value = "/mlist")
-	public ModelAndView mlist(ModelAndView mv) {
 
-		List<MemberVO> list = service.selectList();
-		if (list != null) {
-			mv.addObject("Banana", list);
-		}else {
-			mv.addObject("message", "~~ 출력할 자료가 한건도 없습니다 ~~") ;
-		}
-		mv.setViewName("myInfo/memberList");
-		return mv;
-	} 
-	
-//	@RequestMapping(value = "/mdelete")
-//	public ModelAndView jsdelete(ModelAndView mv, MemberVO vo) {
-//		
-//		if (service.delete(vo) > 0) {
-//			mv.addObject("success", "T");
-//		}else {
-//			mv.addObject("success", "F");
-//		}
-//		mv.setViewName("jsonView");
-//		return mv;
-//	}
 	
 	@RequestMapping(value = "/mDelete")
 	public ModelAndView mdelete(ModelAndView mv, MemberVO vo,HttpServletRequest request) {
@@ -347,12 +307,5 @@ public class MemberController {
 		return mv;
 	}
 
-	@RequestMapping(value = "/editF")
-	public ModelAndView editF(ModelAndView mv) {
-		
-		mv.setViewName("edit/editF");
-		
-		return mv;
-	}
-	
+
 }

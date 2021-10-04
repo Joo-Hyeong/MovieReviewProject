@@ -7,7 +7,7 @@
 <html>
 <html lang="en">
 <head>
-<title>회원가입 약관</title>
+<title>고객센터 답변</title>
 <!-- for-mobile-apps -->
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -85,6 +85,29 @@ $(function(){
 		
 		});
 
+	// SearchType 이 '---' 면 keyword 클리어
+	$('#searchType').change(function() {
+		if ($(this).val()=='n') $('#keyword_qaBoard').val('');
+	}); //change
+	
+	$('#searchBtn').on("click", function() {
+		self.location="qaAnswerMenu"
+			+"${pageMaker.makeQuery(1)}"
+			+"&searchType="
+			+$('#searchType').val()
+			+'&keyword='
+			+$('#keyword_qaBoard').val()	
+				
+	}); //on_click
+
+	$('#searchButton').click(function(){
+		$("#searchF").submit();
+		
+	});
+	
+	
+	
+	
 });//ready
 
 
@@ -171,84 +194,6 @@ function passwordCheckLogin(){
 
 
 </script>
-<!--// 기본 화면 스크립트  -->
-
-<!-- 약관 스크립트 -->
-<script type="text/javascript">
-
-
-var rule1 = false;
-var rule2 = false;
-var rule3 = false;
-
-function checkRule(){
-	
-	rule1 = document.getElementById('rule1').checked;
-	rule2 = document.getElementById('rule2').checked;	
-	rule3 = document.getElementById('rule3').checked;	
-	
-
-	if(rule1 && rule2 && rule3){
-		
-		location.href="joinF";
-		
-	}else{
-		alert('약관을 확인해주세요.');
-	
-	}
-	
-	
-	
-	
-}// checkRule
-
-$(function(){
-	
-	$('#rule4').change(function(){
-		
-		if($('#rule4').is(":checked")){
-			
-			$('#rule1').prop('checked',true);
-			$('#rule2').prop('checked',true);
-			$('#rule3').prop('checked',true);
-		
-			
-        }else{
-        	$('#rule1').prop('checked',false);
-			$('#rule2').prop('checked',false);
-			$('#rule3').prop('checked',false);
-		
-			
-        }
-	});// rule4 change
-	
-	
-	$('.rule').change(function(){
-		
-		if($('#rule1').is(":checked") && $('#rule2').is(":checked") && $('#rule3').is(":checked")){
-			
-				$('#rule4').prop('checked',true);
-				
-			
-				
-        }else{
-        	
-        		$('#rule4').prop('checked',false);
-        		
-        
-
-        	}
-		
-		
-		});// .rule change
-		
-	
-}); //ready
-
-
-</script>
-
-
 <style type="text/css">
 
 .form-module input[type="button"] {
@@ -268,38 +213,10 @@ $(function(){
   background:#FF8D1B;
 }
 
-input[type="button"] {
-	background: #919191;
-    width: 40%;
-    border: 0;
-    padding: 10px 15px;
-    color: #ffffff;
-    -webkit-transition: 0.3s ease;
-    transition: 0.3s ease;
-    font-size: 1em;
-    font-weight: bold;
-    text-transform: uppercase;
-	outline:none;
-}
-input[type="button"]:hover {
-  background:#FF8D1B;
-}
-
-.terms {
-    width: 100%;
-    padding: 10px;
-    outline: none;
-    resize: none;
-    height: 150px;
-    border: 1px solid #d5d3d3;
-    font-size: 14px;
-}
-
 .message{
 	color: red;
 }
 </style>
-
 
 <!-- footer메뉴바 고정 -->
 <style type="text/css">
@@ -310,24 +227,26 @@ min-height: 100vh;
 }
 
 .general {
-padding-bottom: 150px; /* 푸터 높이 */
+padding-bottom: 2.5rem; /* 푸터 높이 */
 }
 
 .footer {
 position: absolute;
 bottom: 0;
 width: 100%;
-height: 150px; /* 푸터 높이 */
+height: 2.5rem; /* 푸터 높이 */
 }
 
+.table>thead>tr>th{
+	color: white;
 
+}
 </style>
-
-
 
 </head>
 	
 <body>
+
 <div class="wrap">
 <!-- header -->
 	<div class="header">
@@ -410,13 +329,13 @@ height: 150px; /* 푸터 높이 */
 				<div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
 					<nav>
 						<ul class="nav navbar-nav">
-							<li class="active"><a href="home">Home</a></li>
+							<li><a href="home">Home</a></li>
 							<li><a href="qalist">고객센터</a></li>
 							
 							<c:if test="${loginID=='admin'}">
 								<li><a href="addMovieMenu">영화 추가</a>
 								<li><a href="memberUpdateMenu">회원 관리</a>
-								<li><a href="qaAnswerMenu">고객문의 답변</a>
+								<li class="active"><a href="qaAnswerMenu">고객문의 답변</a>
 							</c:if>
 							
 						</ul>
@@ -428,61 +347,89 @@ height: 150px; /* 푸터 높이 */
 
 <!-- general -->
 	<div class="general">
-		<h4 class="latest-text w3_latest_text">회원가입 약관</h4>
+		<h4 class="latest-text w3_latest_text">고객센터 답변</h4>
 		<div class="container">
-			
-		<div id="join_content" class="col-md-5" style="float:none; margin:0 auto">
-	<!-- content -->
-			<form>
-			<textarea class="terms">동해물과백두산이마르고닳도록</textarea><br>
+
+<table  class="table table-striped">
+<thead>
+<tr style="background: #FF8D1B;" id="tableTH" >
+	<th>번호</th><th>제목</th><th>ID</th><th>등록일</th><th>조회수</th>
+</tr>
+</thead>
+
+<tbody>
+<c:forEach var="list" items="${newQa}"><tr height="40">
+
+	<td>${list.seq}</td>
+	<td>
+		<a href="qadetail?seq=${list.seq}&id=${list.id}&adminMod=Y"><span style="color:Purple">new</span> &nbsp;&nbsp;${list.title}</a>
+	</td>
+	<td>${list.id}</td><td>${list.regdate}</td><td>${list.cnt}</td>
+</tr>
+
+</c:forEach>
+</tbody>
+</table>		
+
+<br>
+<div id="searchBar" align="center">
+	<select name="searchType" id="searchType">
+		<option value="n" <c:out value="${pageMaker.cri.searchType==null ? 'selected':''}"/> >- 선택 -</option>
+		<option value="t" <c:out value="${pageMaker.cri.searchType=='t' ? 'selected':''}"/> >Title</option>
+		<option value="c" <c:out value="${pageMaker.cri.searchType=='c' ? 'selected':''}"/> >Content</option>
+		<option value="w" <c:out value="${pageMaker.cri.searchType=='w' ? 'selected':''}"/> >Writer(ID)</option>
+		<option value="tc" <c:out value="${pageMaker.cri.searchType=='tc' ? 'selected':''}"/> >Title or Content</option>
+		<option value="cw" <c:out value="${pageMaker.cri.searchType=='cw' ? 'selected':''}"/> >Content or Writer</option>
+	</select>
+	<input type="text" name="keyword" id="keyword_qaBoard" value="${pageMaker.cri.keyword}">
+	<a class="label label-warning" id="searchBtn">Search</a>
+</div>
+<br><hr>
+<div align="center">
+
+	<nav>			
+	<ul class="pagination">	
 	
-	<span class="rule_agree">
-		<label for="rule1">
-			이 약관에 동의하시겠습니까?
-		</label>
-		<input type="checkbox" id="rule1" class="rule">
-	</span><br><br>
+	<c:choose>
+		
+		<c:when test="${pageMaker.prev && pageMaker.spageNo>1}">
+			<li><a href="qaAnswerMenu${pageMaker.searchQuery(pageMaker.spageNo-1)}" aria-label="Previous"><span aria-hidden="true">«</span></a></li>				
+		</c:when>
+		<c:otherwise>
+			<li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
+		</c:otherwise>
+	</c:choose>	
 	
-	<textarea class="terms">하느님이보우하사우리나라만세</textarea><br>
 	
-	<span class="rule_agree">
-		<label for="rule2">
-			이 약관에 동의하시겠습니까?
-		</label>
-		<input type="checkbox" id="rule2" class="rule">
-	</span><br><br>
-	
-	<textarea class="terms">동해물과백두산이마르고닳도록</textarea><br>
-	
-	<span class="rule_agree">
-		<label for="rule3">
-			이 약관에 동의하시겠습니까?
-		</label>
-		<input type="checkbox" id="rule3" class="rule">
-	</span><br><br>
-	
-	<span class="rule_agree">
-		<label for="rule4">
-			모든 약관에 동의합니다.
-		</label>
-		<input type="checkbox" id="rule4">
-	</span>
-	
-	<div>
-		<span>
-			<input type="button" id="submitButton" onclick="checkRule()" value="확인" >&nbsp;
-			<input type="button" id="homeButton" onclick="location.href='home'" value="취소">
-		</span>
-		<br>
-		<br>
-	</div>
-	</form>
-	
-			</div>
-			<!-- //join_content -->
+	<!-- 2) sPageNo ~ ePageNo 까지, displayPageNo 만큼 표시 -->
+	<c:forEach var="i" begin="${pageMaker.spageNo}" end="${pageMaker.epageNo}">
+		<c:if test="${i==pageMaker.cri.currPage}">
+			<li class="active"><a href="#">${i}<span class="sr-only">(current)</span></a></li>
+						
+		</c:if>
+		<c:if test="${i!=pageMaker.cri.currPage}">
+			<li><a href="qaAnswerMenu${pageMaker.searchQuery(i)}">${i}</a></li>
+		</c:if>
+	</c:forEach>
+	<!-- 3) Next >  ,  Last >>  처리 -->
+	<c:choose>
+		
+		<c:when test="${pageMaker.next && pageMaker.epageNo>0}">
+			<li><a href="qaAnswerMenu${pageMaker.searchQuery(pageMaker.epageNo+1)}" aria-label="Next"><span aria-hidden="true">»</span></a></li>	
+		</c:when>
+		<c:otherwise>
+			<li class="disabled"><a href="#" aria-label="Next"><span aria-hidden="true">»</span></a></li>	
+		</c:otherwise>
+	</c:choose>	
+	</ul>
+
+	</nav>	
+
 		</div>
 			<!-- //container -->
-		
+<br><br>
+<br><br>
+<br><br>		
 	</div>
 <!-- //general -->
 
