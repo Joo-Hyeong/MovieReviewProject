@@ -99,7 +99,6 @@ function check() { // 체크박스 한번에 모두 선택가능하게 만드는
 							<th><input type="checkbox" name="chkAll" id="chkAll" onclick="check()"></th>
 							<th>영화제목</th>
 							<th>영화감독</th>
-							<th>평점</th>
 							<th>개봉일</th>
 						</tr>
 					</thead>
@@ -110,7 +109,6 @@ function check() { // 체크박스 한번에 모두 선택가능하게 만드는
 						<td><input type="checkbox" name="chk[]" class="chkd" value="${list.movie_num}">&nbsp;&nbsp;</td>
 						<td><a href="mvdetail?movie_num=${list.movie_num}&searchType=n">${list.movie_title}</a></td>
 						<td>${list.director}</td>
-						<td>평균평점구현</td>
 						<td>${list.release}</td>
 						</tr>
 					</c:forEach>

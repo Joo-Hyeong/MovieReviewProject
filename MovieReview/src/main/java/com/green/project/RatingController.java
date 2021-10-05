@@ -11,6 +11,7 @@ import VO.MemberVO;
 import VO.MovieVO;
 import VO.RatingVO;
 import service.MemberService;
+import service.MovieService;
 import service.RatingService;
 
 @Controller
@@ -19,7 +20,7 @@ public class RatingController {
 	@Autowired
 	MemberService service;
 	@Autowired
-	RatingService serviceR ;
+	RatingService serviceR;
 
 	
 	@RequestMapping(value = "/inputRatingF")
@@ -30,7 +31,7 @@ public class RatingController {
 		mv.setViewName("movie/inputRatingF");
 		
 		return mv;
-	}//rdelete
+	}
 	
 	
 	
@@ -63,6 +64,7 @@ public class RatingController {
 		cri.setSnoEno();
     
 		mv.addObject("ratingVoList",serviceR.searchList(cri));
+
 		pageMaker.setCri(cri);
 		pageMaker.setTotalRowCount(serviceR.searchRowsCount(cri));
 		
@@ -74,7 +76,7 @@ public class RatingController {
 	
 	@RequestMapping(value = "/rdelete")
 	public ModelAndView rdelete(ModelAndView mv,RatingVO rvo,HttpServletRequest request ) {
-		String chk[] = request.getParameterValues("chk[]");
+		String chk[] = request.getParameterValues("chk_1[]");
 		for(String s:chk) {
 			rvo.setRating_num(Integer.parseInt(s));
 			serviceR.delete(rvo);

@@ -530,6 +530,8 @@ height: 150px; /* 푸터 높이 */
 									</c:if>
 
 						</div>	
+						
+						
 						<br>
 						<br>
 						<div class="input-group w3_w3layouts">
@@ -609,6 +611,44 @@ height: 150px; /* 푸터 높이 */
 
 </div><!-- //ratingList -->					
 
+<nav>			
+	<ul class="pagination">	
+	
+	<c:choose>
+		
+		<c:when test="${pageMaker.prev && pageMaker.spageNo>1}">
+			<li><a href="mvdetail${pageMaker.searchQuery(pageMaker.spageNo-1)}" aria-label="Previous"><span aria-hidden="true">«</span></a></li>				
+		</c:when>
+		<c:otherwise>
+			<li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
+		</c:otherwise>
+	</c:choose>	
+	
+	
+	<!-- 2) sPageNo ~ ePageNo 까지, displayPageNo 만큼 표시 -->
+	<c:forEach var="i" begin="${pageMaker.spageNo}" end="${pageMaker.epageNo}">
+		<c:if test="${i==pageMaker.cri.currPage}">
+			<li class="active"><a href="#">${i}<span class="sr-only">(current)</span></a></li>
+						
+		</c:if>
+		<c:if test="${i!=pageMaker.cri.currPage}">
+			<li><a href="mvdetail${pageMaker.searchQuery(i)}">${i}</a></li>
+		</c:if>
+	</c:forEach>
+	<!-- 3) Next >  ,  Last >>  처리 -->
+	<c:choose>
+		
+		<c:when test="${pageMaker.next && pageMaker.epageNo>0}">
+			<li><a href="mvdetail${pageMaker.searchQuery(pageMaker.epageNo+1)}" aria-label="Next"><span aria-hidden="true">»</span></a></li>	
+		</c:when>
+		<c:otherwise>
+			<li class="disabled"><a href="#" aria-label="Next"><span aria-hidden="true">»</span></a></li>	
+		</c:otherwise>
+	</c:choose>	
+	</ul>
+
+	</nav>
+
 					</div>
 					<!--//한줄평  -->
 					
@@ -640,7 +680,7 @@ height: 150px; /* 푸터 높이 */
 						<a href="#">Company</a>
 					</li>
 					<li>
-						<a href="#">Contact Us</a>
+						<a href="contact">Contact Us</a>
 					</li>
 					<li style="color: white;"><i class="fa fa-phone" aria-hidden="true"></i> (+031) 712-7557</li>
 				</ul>

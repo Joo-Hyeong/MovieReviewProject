@@ -80,25 +80,26 @@
   		<select id="pageListNew" resultType="VO.MovieVO">
   		<![CDATA[
   			
-			select * from (select m.*,row_number() over(order by release)
-  		 	rnum from movie m where sysdate-to_date(release,'YYYY/MM/DD')<30)  
-  			where rnum between #{sno} and #{eno}
+			select m.*, nvl(rate_avg,0) rate_avg from (select movie.*, row_number() over(order by release)
+  		 	rnum from movie where sysdate-to_date(release,'YYYY/MM/DD')<30) m, (select rating.movie_num, nvl(avg(rate),0) rate_avg from rating group by rating.movie_num) r  
+  			where (m.movie_num=r.movie_num(+)) and rnum between #{sno} and #{eno}
   			
   			]]>
   		</select>
   		
    		<select id="pageListRandom" resultType="VO.MovieVO">
   		
-  			select * from (select m.*,row_number() over(order by dbms_random.value)
-  		 	rnum from movie m) where rnum between #{sno} and #{eno}
+  			select m.* , nvl(rate_avg,0) rate_avg from (select movie.*, row_number() over(order by dbms_random.value)
+  		 	rnum from movie) m, (select rating.movie_num, nvl(avg(rate),0) rate_avg from rating group by rating.movie_num) r 
+  		 	where (m.movie_num=r.movie_num(+)) and rnum between #{sno} and #{eno}
   		 	
   		</select>
   		
   		<select id="pageListRate" resultType="VO.MovieVO">
   		
-			select * from (select m.*,row_number() over(order by r.rate_avg desc)
-  		 	rnum from movie m, (select movie_num, nvl(avg(rate),0) rate_avg from rating group by movie_num) r where m.movie_num=r.movie_num  )
-  			where rnum between #{sno} and #{eno}
+			select m.*, rate_avg from (select movie.* from movie) m, 
+			(select rating.movie_num, nvl(avg(rate),0) rate_avg, row_number() over(order by nvl(avg(rate),0) desc) rnum from rating group by rating.movie_num) r
+  			where (m.movie_num=r.movie_num) and rnum between #{sno} and #{eno}
   			
   		</select>
 
@@ -121,7 +122,7 @@
   		<select id="selectListRandom" resultType="VO.MovieVO">
   		
   			select m.*, nvl(rate_avg,0) rate_avg from movie m, (select movie_num, nvl(avg(rate),0) rate_avg from rating group by movie_num) 
-  			r where m.movie_num=r.movie_num(+) order by dbms_random.value
+  			r where m.movie_num=r.movie_num(+) order by dbms_random.random()
   		</select>
   		
   		<select id="selectListRate" resultType="VO.MovieVO">

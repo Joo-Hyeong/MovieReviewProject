@@ -73,12 +73,17 @@ public class WishController {
 		}
 		
 		cri.setSnoEno();
+		pageMaker.setCri(cri);
 		
 		List<WishVO> listW = serviceW.searchList(cri);
 		
 		if(listW.isEmpty()) {
 			mv.addObject("messageHome", "찜 목록에 등록된 영화가 없습니다.");
 		}else {
+			pageMaker.setTotalRowCount(serviceW.searchRowsCount(cri));
+		
+			mv.addObject("pageMaker",pageMaker);
+			
 			List<MovieVO> listM = new ArrayList<MovieVO>();
 		for(int i=0;i<listW.size();i++) {
 			mvo.setMovie_num(listW.get(i).getMovie_num());
@@ -87,16 +92,13 @@ public class WishController {
 		
 		mv.addObject("Banana", listM);
 		
-		pageMaker.setCri(cri);
-		pageMaker.setTotalRowCount(serviceW.searchRowsCount(cri));
 		
-		mv.addObject("pageMaker",pageMaker);
 		}
 		
 		
 		
 		if("wish".equals(orderID)) 
-			 mv.setViewName("movie/movieList2");
+			 mv.setViewName("movie/movieList");
 		else mv.setViewName("myInfo/wishList");
 		
 		

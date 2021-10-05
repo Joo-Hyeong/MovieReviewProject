@@ -14,7 +14,7 @@ public class Criteria {
 	
 	// 1) 생성자로 기본값 초기화
 	public Criteria() {
-		this.rowsPerPage=8;
+		this.rowsPerPage=6;
 		this.currPage=1;
 	} //생성자
 	// 2) 요청받은(출력할) PageNo set
@@ -26,7 +26,7 @@ public class Criteria {
 	// => 제한조건 점검 ( 50개 까지만 허용)
 	// => 당장은 사용하지 않지만 사용가능하도록 작성
 	public void setRowsPerPage(int rowsPerPage) {
-		if (rowsPerPage<8 || rowsPerPage>50) this.rowsPerPage=8;
+		if (rowsPerPage<6 || rowsPerPage>50) this.rowsPerPage=6;
 		else this.rowsPerPage=rowsPerPage;
 	}
 	// 4) sno, eno 계산

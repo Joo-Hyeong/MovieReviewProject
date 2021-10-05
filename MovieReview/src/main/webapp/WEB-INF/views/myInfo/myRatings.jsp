@@ -98,9 +98,9 @@
 			<table class="table table-striped">
 					<thead>
 						<tr>
-							<th><input type="checkbox" name="chkAll_1" id="chkAll_1" onclick="check_1()">&nbsp;&nbsp;</th>
+							<th><input type="checkbox" name="chkAll_1" id="chkAll_1" onclick="check_1()"></th>
 							<th>번호</th>
-							<th>영화번호</th>
+							<th>영화제목</th>
 							<th>평점</th>
 							<th>한줄평</th>
 							<th>스포일러</th>
@@ -111,10 +111,10 @@
 					<tbody>
 						<c:forEach var="list" items="${ratingVoList}" varStatus="vs">
 							<tr>
-								<td><input type="checkbox" name="chk_1[]" class="chkd_1" value="${list.rating_num}">&nbsp;&nbsp;</td>
-								<td align="center">${list.rating_num}</td>
-								<td align="center">${list.movie_num}</td>
-								<td>${list.rate}
+								<td><input type="checkbox" name="chk_1[]" class="chkd_1" value="${list.rating_num}"></td>
+								<td>${list.rating_num}</td>
+								<td><a href="mvdetail?movie_num=${list.movie_num}&searchType=n">${list.movie_title}</a></td>
+								<td>
 						<c:choose>
 							<c:when test="${list.rate==1}">⭐</c:when>
 							<c:when test="${list.rate==2}">⭐⭐</c:when>
@@ -124,8 +124,8 @@
 							<c:otherwise></c:otherwise>
 						</c:choose></td>
 
-					<td><a href="mvdetail?movie_num=${list.movie_num}&searchType=n">${list.takeaway}</a></td>
-					<td align="center">${list.spoiler}</td>
+					<td>${list.takeaway}</td>
+					<td>${list.spoiler}</td>
 					<td>${list.regdate}</td>
 						</tr>
 					</c:forEach>

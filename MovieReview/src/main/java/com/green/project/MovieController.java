@@ -185,23 +185,33 @@ public class MovieController {
 	}
 
 	@RequestMapping(value = "/mvlist")
-	public ModelAndView mlist(ModelAndView mv,HttpServletRequest request) {
+	public ModelAndView mlist(ModelAndView mv,HttpServletRequest request, criForMovie.SearchCriteria cri, criForMovie.PageMaker pageMaker) {
 		String orderID = request.getParameter("orderID");
+		
+		cri.setSnoEno();
+		
+		pageMaker.setCri(cri);
+
 		if("random".equals(orderID)) {
 			
-			List<MovieVO> list = service.selectListRandom();
-			if (list != null) mv.addObject("Banana", list);
+			mv.addObject("Banana",service.pageListRandom(cri));
+
+			pageMaker.setTotalRowCount(service.pageRowsCountRandom(cri));
+
 			
 		}else if("rating".equals(orderID)) {
+
+			mv.addObject("Banana",service.pageListRate(cri));
 			
-			List<MovieVO> list = service.selectListRate();
-			if (list != null) mv.addObject("Banana", list);
+			pageMaker.setTotalRowCount(service.pageRowsCountRate(cri));
+
 			
 		} else if("new".equals(orderID)){
 			
-			List<MovieVO> list = service.selectListNew();
-			
+			List<MovieVO> list = service.pageListNew(cri);
 
+			pageMaker.setTotalRowCount(service.pageRowsCountNew(cri));
+			
 			if (list != null&&!(list.isEmpty())) {
 					mv.addObject("Banana", list);
 					mv.addObject("newMovie","T");
@@ -210,10 +220,15 @@ public class MovieController {
 				}
 				
 		}
+
+		mv.addObject("orderID", orderID);
+		mv.addObject("pageMaker",pageMaker);
 		
-		mv.setViewName("movie/movieList2");
+		mv.setViewName("movie/movieList");
 		return mv;
 	} //mlist
+	
+	
 	
 	@RequestMapping(value = "/mvdetail")
 	public ModelAndView bdetail(HttpServletRequest request, ModelAndView mv, MovieVO mvo, ActorVO avo, WishVO wvo, 

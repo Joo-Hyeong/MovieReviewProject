@@ -43,6 +43,16 @@ public class HomeController {
 		return mv;
 	}
 
+	@RequestMapping(value = "/contact")
+	public ModelAndView contact(ModelAndView mv) {
+		
+		mv.setViewName("contact/contact");
+		
+		return mv;
+	}
+	
+	
+	
 	
 	@RequestMapping(value = "/qaAnswerMenu")
 	public ModelAndView qaAnswerMenu(ModelAndView mv, criForBoard.SearchCriteria cri, criForBoard.PageMaker pageMaker) {

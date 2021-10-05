@@ -7,11 +7,11 @@
 		<choose>
 		
 		<when test="searchType=='n'.toString()">
-     	   movie_num = #{movie_num}
+     	   r.movie_num = #{movie_num}
     	 </when>
      	
      	<when test="searchType=='w'.toString()">
-     	   id = #{id}
+     	   r.id = #{id}
     	 </when>
 
   		</choose>
@@ -26,7 +26,7 @@
 
 	<select id="searchRowsCount" resultType="int">
 	<![CDATA[
-		select count(*) from rating where ]]>
+		select count(*) from rating r where ]]>
 	<include refid="search"></include>
 	</select>
 
@@ -36,7 +36,7 @@
 	<select id="searchList" resultType="VO.RatingVO">
 	
 	<![CDATA[
-		select * from rating where 	]]>
+		select r.* , movie_title from rating r, movie m where r.movie_num=m.movie_num and ]]>
 		
 		<include refid="search"></include>
 		

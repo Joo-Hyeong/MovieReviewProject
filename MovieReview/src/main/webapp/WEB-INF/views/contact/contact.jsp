@@ -7,7 +7,7 @@
 <html>
 <html lang="en">
 <head>
-<title>답변 등록</title>
+<title>CONTACT US</title>
 <!-- for-mobile-apps -->
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -67,6 +67,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <!-- start-smoth-scrolling -->
 
 
+
+
+<!-- 영화 분류 ajax 처리 -->
 <script type="text/javascript">
 
 /* 로그인 스크립트 */
@@ -114,8 +117,10 @@ function login(){
 						alert('로그인 되었습니다.');
 						return location.reload();
 						
+					}else if(result.check=='F'){
+						$('#loginMessage').html('비밀번호가 틀렸습니다.');
 					}else{
-						$('#loginMessage').html('해당 회원 정보가 없습니다.');
+						$('#loginMessage').html('일치하는 정보가 없습니다.');
 					}
 				},
 				error:function(){
@@ -170,18 +175,10 @@ function passwordCheckLogin(){
 }//passCheck
 
 
-function checkForm(){
-	
-	if($('#title').val().length<1||$('#content').val().length<1){
-		alert('제목 혹은 내용을 제대로 입력해주세요.');
-		return false;
-	}else{
-		alert('글 등록 완료');
-	}
-	
-}
-
 </script>
+
+
+
 <style type="text/css">
 
 .form-module input[type="button"] {
@@ -204,34 +201,16 @@ function checkForm(){
 .message{
 	color: red;
 }
-</style>
-
-<!-- footer메뉴바 고정 -->
-<style type="text/css">
-
-.wrap {
-position: relative;
-min-height: 100vh;
-}
-
-.general {
-padding-bottom: 150px; /* 푸터 높이 */
-}
-
-.footer {
-position: absolute;
-bottom: 0;
-width: 100%;
-height: 150px; /* 푸터 높이 */
-}
-
 
 </style>
+
+
+
 
 </head>
 	
 <body>
-<div class="wrap">
+
 
 <!-- header -->
 	<div class="header">
@@ -314,13 +293,13 @@ height: 150px; /* 푸터 높이 */
 				<div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
 					<nav>
 						<ul class="nav navbar-nav">
-							<li ><a href="home">Home</a></li>
+							<li class="active"><a href="home">Home</a></li>
 							<li><a href="qalist">고객센터</a></li>
 							
 							<c:if test="${loginID=='admin'}">
 								<li><a href="addMovieMenu">영화 추가</a>
 								<li><a href="memberUpdateMenu">회원 관리</a>
-								<li class="active"><a href="qaAnswerMenu">고객문의 답변</a>
+								<li><a href="qaAnswerMenu">고객문의 답변</a>							
 							</c:if>
 							
 						</ul>
@@ -332,36 +311,43 @@ height: 150px; /* 푸터 높이 */
 
 <!-- general -->
 	<div class="general">
-		<h4 class="latest-text w3_latest_text">답변 등록</h4>
+		<h4 class="latest-text w3_latest_text">CONTACT US</h4>
 		<div class="container">
 		
-	<form action="reply" method="post">
 		
-		<input type="hidden" name="id" value="${loginID}">
 		
-		<div class="input-group w3_w3layouts">
-				<span class="input-group-addon" id="basic-addon1">글 제목</span>
-				<input class="col-lg-8" type="text" id="title" name="title" class="form-control" placeholder="글 제목을 입력해주세요." aria-describedby="basic-addon1">
+		<div id="map" style="width:500px;height:400px; margin: 20px;"></div>
+			<hr>
+				<div class="col-md-4 location-agileinfo">
+					<div class="icon-w3">
+						<span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
+					</div>
+					<h3>Address</h3>
+					<h4>그린컴퓨터아카데미 성남분당점</h4>
+					<h4>경기도 성남시 분당구</h4>
+					<h4>돌마로 46 5층</h4>
+				</div>
+				<div class="col-md-4 call-agileits">
+					<div class="icon-w3">
+						<span class="glyphicon glyphicon-earphone" aria-hidden="true"></span>
+					</div>
+					<h3>Call</h3>
+					<h4>031-712-7557</h4>
+					<h4>010-8965-0736</h4>
+				</div>
+				<div class="col-md-4 mail-wthree">
+					<div class="icon-w3">
+						<span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
+					</div>
+					<h3>Email</h3>
+					<h4><a href="mailto:dlstk21@naver.com">dlstk21@naver.com</a></h4>
+
+				</div>
+
+
+		
 		</div>
-		
-		<div class="input-group w3_w3layouts">
-				<span class="input-group-addon" id="basic-addon1" style="">글 내용</span>
-				<textarea name="content" id="content" style="height: 200px" placeholder="글 내용을 입력해주세요." class="col-lg-8"></textarea>
-				<!-- <input type="text" name="content" style="height: 200px"  class="form-control" placeholder="글 내용을 입력해주세요." aria-describedby="basic-addon1"> -->
-		</div>
-	    	<input type="text" name="seq" value="${qABoardVO.seq}" hidden>
-			<input type="text" name="root" value="${qABoardVO.root}" hidden>
-			<input type="text" name="step" value="${qABoardVO.step}" hidden>
-			<input type="text" name="indent" value="${qABoardVO.indent}" hidden>
-			<input type="text" name="secret" value="${qABoardVO.secret}" hidden>
-			<input type="text" name="adminMod" value="${adminMod}" hidden>
-		
-			<input type="submit" value="등록" onclick="return checkForm()">&nbsp;&nbsp;
-			<input type="button" onclick="history.go(-1)" value="뒤로가기">
-	</form>
-	</div>
-		<!-- //container -->
-		
+			<!-- //container -->	
 	</div>
 <!-- //general -->
 
@@ -423,7 +409,59 @@ $(document).ready(function(){
 	</script>
 <!-- //here ends scrolling icon -->
 
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=41e641c3805587da87f25256fb40aa05&libraries=services"></script>
+<script>
 
-</div>
+var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+mapOption = { 
+    center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+    level: 3 // 지도의 확대 레벨
+};
+
+var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+
+//일반 지도와 스카이뷰로 지도 타입을 전환할 수 있는 지도타입 컨트롤을 생성합니다
+var mapTypeControl = new kakao.maps.MapTypeControl();
+
+//지도에 컨트롤을 추가해야 지도위에 표시됩니다
+//kakao.maps.ControlPosition은 컨트롤이 표시될 위치를 정의하는데 TOPRIGHT는 오른쪽 위를 의미합니다
+map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
+
+//지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
+var zoomControl = new kakao.maps.ZoomControl();
+map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+
+
+//주소-좌표 변환 객체를 생성합니다
+var geocoder = new kakao.maps.services.Geocoder();
+
+// 주소로 좌표를 검색합니다
+geocoder.addressSearch('경기도 성남시 분당구 구미동 7-2', function(result, status) {
+
+    // 정상적으로 검색이 완료됐으면 
+     if (status === kakao.maps.services.Status.OK) {
+
+        var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+        // 결과값으로 받은 위치를 마커로 표시합니다
+        var marker = new kakao.maps.Marker({
+            map: map,
+            position: coords
+        });
+
+        // 인포윈도우로 장소에 대한 설명을 표시합니다
+        var infowindow = new kakao.maps.InfoWindow({
+            content: '<div style="width:150px;text-align:center;padding:6px 0;">그린 컴퓨터 아카데미</div>'
+        });
+        infowindow.open(map, marker);
+
+        // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+        map.setCenter(coords);
+    } 
+});    
+
+</script>
+
+
 </body>
 </html>

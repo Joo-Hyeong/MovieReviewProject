@@ -453,7 +453,7 @@ height: 2.5rem; /* 푸터 높이 */
 						<a href="#">Company</a>
 					</li>
 					<li>
-						<a href="#">Contact Us</a>
+						<a href="contact">Contact Us</a>
 					</li>
 					<li style="color: white;"><i class="fa fa-phone" aria-hidden="true"></i> (+031) 712-7557</li>
 				</ul>

@@ -181,7 +181,9 @@ var iCheck=false;
 var pCheck=false;
 var eCheck=false;
 var nCheck=false;
+var numCheck=false;
 
+var checkNum;
 
 $(function(){
 	
@@ -197,7 +199,19 @@ $(function(){
 		
 	$('#email').focusout(function(){
 		eCheck=emailCheck();
+		
+		
+		if(eCheck){
+			if($('#domain').val().length>0){
+				
+			$('#sendEmail').prop("disabled", false);
+			}
+			
+		}else{
+			$('#sendEmail').prop("disabled", true);
+		}
 	}); 
+	
 		
 	$('#nickName').focusout(function() {
 		nCheck=nickNameCheck();
@@ -230,6 +244,13 @@ $(function(){
 			 	});
 			 	$('#domain').val('');
 			}
+			 
+			if(eCheck){
+				$('#sendEmail').prop("disabled", false);
+				
+				return;
+			}
+		
 		}else{
 			$('#domain').attr({
 		 		readonly: true,
@@ -237,7 +258,27 @@ $(function(){
 		 	});
 		 	$('#domain').val('');
 		}
+		
+		$('#sendEmail').prop("disabled", true);
 	});// domainf change
+	
+	
+	
+	$("#sendEmail").click(function(){
+		
+		var email = $("#email").val() + "@" +$("#domain").val(); 
+		
+		$.ajax({
+	        
+	        type:"GET",
+	        url:"mailCheck?email=" + email,
+	        success:function(result){
+	        	checkNum=result.checkNum;
+	        }        
+	    });
+		
+		
+	});
 	
 });//ready
 
@@ -254,9 +295,11 @@ function checkForm(){
 	if (nCheck==false) {
 		$('#nMessage').html(' 닉네임을 확인해주세요.');
 	}
-
+	if(numCheck==false) {
+		$('#numMessage').html('인증번호 인증을 해주세요.');
+	}
 	
-	if ( iCheck && pCheck && eCheck && nCheck) {
+	if ( iCheck && pCheck && eCheck && nCheck && numCheck) {
 		   // 오류 확인 완료
 		  alert('축하합니다. 회원가입 되었습니다.');
 	
@@ -268,6 +311,26 @@ function checkForm(){
 	}
 	
 }//checkForm()
+
+function checkNumber(){
+	
+	if($('#checkNum').val()==checkNum){
+		numCheck=true;
+		
+		$('#numMessage').html('인증번호 일치');
+		$('#certify').prop("disabled", true);
+		
+		$('#numMessage').css("color", "green");
+		
+	}else{
+		numCheck=false;
+		
+		$('#numMessage').html('인증번호 불일치');
+		$('#certify').prop("value","다시 시도");
+
+	}
+		
+}
 
 </script>
 
@@ -469,9 +532,20 @@ height: 150px; /* 푸터 높이 */
 				<option>daum.net</option>
 				<option>직접입력</option>
 			</select>
-			<input type="button" value="인증번호 발송" id="sendEmail"></input>
+			<input type="button" value="인증번호 발송" id="sendEmail" disabled="disabled"></input><br>
+			
+			<span id="eMessage" class="message"></span>
 		</span><br>
-		<span id="eMessage" class="message"></span>
+		
+		<div style="position:relative; left: 40px;">
+			<span>
+				<input type="text" id="checkNum" placeholder="인증번호 입력" >
+				<input type="button" id="certify" onclick="checkNumber()" value="인증확인">
+			</span><br>
+			<span id="numMessage" class="message"></span>
+		</div>
+		
+		
 	</div>
 	<br>
 	<div>
@@ -511,7 +585,7 @@ height: 150px; /* 푸터 높이 */
 			
 		</div>
 			<!-- //container -->
-		
+		<br>
 	</div>
 <!-- //general -->
 
@@ -529,7 +603,7 @@ height: 150px; /* 푸터 높이 */
 						<a href="#">Company</a>
 					</li>
 					<li>
-						<a href="#">Contact Us</a>
+						<a href="contact">Contact Us</a>
 					</li>
 					<li style="color: white;"><i class="fa fa-phone" aria-hidden="true"></i> (+031) 712-7557</li>
 				</ul>
