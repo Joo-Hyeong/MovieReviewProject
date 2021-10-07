@@ -96,7 +96,6 @@ function checkForm(){
 	<input type="text" id="grade" name="grade" value="${Apple.grade}" hidden>
 
 	<div>
-	<!-- 아직 미구현 입니다. -->
 		<label for="email">
 		<p>이메일</p> 
 		</label>
@@ -110,7 +109,6 @@ function checkForm(){
 				<option>daum.net</option>
 				<option>직접입력</option>
 			</select>
-			<input type="button" value="인증번호 발송" id="sendEmail"></input>
 		</span><br>
 		<span id="eMessage" class="message"></span>
 	</div>

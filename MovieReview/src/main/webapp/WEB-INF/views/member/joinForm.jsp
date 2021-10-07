@@ -274,6 +274,7 @@ $(function(){
 	        url:"mailCheck?email=" + email,
 	        success:function(result){
 	        	checkNum=result.checkNum;
+	        	console.log('이메일 전송 성공: '+checkNum);
 	        }        
 	    });
 		

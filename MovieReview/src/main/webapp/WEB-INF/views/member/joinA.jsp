@@ -434,7 +434,7 @@ height: 150px; /* 푸터 높이 */
 		<div id="join_content" class="col-md-5" style="float:none; margin:0 auto">
 	<!-- content -->
 			<form>
-			<textarea class="terms">동해물과백두산이마르고닳도록</textarea><br>
+			<textarea class="terms">약관. 1</textarea><br>
 	
 	<span class="rule_agree">
 		<label for="rule1">
@@ -443,7 +443,7 @@ height: 150px; /* 푸터 높이 */
 		<input type="checkbox" id="rule1" class="rule">
 	</span><br><br>
 	
-	<textarea class="terms">하느님이보우하사우리나라만세</textarea><br>
+	<textarea class="terms">약관. 2</textarea><br>
 	
 	<span class="rule_agree">
 		<label for="rule2">
@@ -452,7 +452,7 @@ height: 150px; /* 푸터 높이 */
 		<input type="checkbox" id="rule2" class="rule">
 	</span><br><br>
 	
-	<textarea class="terms">동해물과백두산이마르고닳도록</textarea><br>
+	<textarea class="terms">약관. 3</textarea><br>
 	
 	<span class="rule_agree">
 		<label for="rule3">

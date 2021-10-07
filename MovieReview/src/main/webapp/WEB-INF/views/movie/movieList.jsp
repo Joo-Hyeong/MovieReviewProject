@@ -208,60 +208,7 @@ error:function() {
 <h2>${messageHome}</h2>
 </c:if>
 
-<c:if test="${messageHome==null}">
-<div>
 
-
-<nav>			
-	<ul class="pagination">	
-
-	<c:if test="${orderID!='random'}">
-	
-	<c:choose>
-		
-		<c:when test="${pageMaker.prev && pageMaker.spageNo>1}">
-			<li><a onclick="pre_${orderID}()" aria-label="Previous"><span aria-hidden="true">«</span></a></li>				
-		</c:when>
-		<c:otherwise>
-			<li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
-		</c:otherwise>
-	</c:choose>	
-	
-	
-	<!-- 2) sPageNo ~ ePageNo 까지, displayPageNo 만큼 표시 -->
-	<c:forEach var="i" begin="${pageMaker.spageNo}" end="${pageMaker.epageNo}">
-		<c:if test="${i==pageMaker.cri.currPage}">
-			<li class="active"><a href="#">${i}<span class="sr-only">(current)</span></a></li>
-						
-		</c:if>
-		<c:if test="${i!=pageMaker.cri.currPage}">
-			<li><a onclick="cur_${orderID}(${i})" style="cursor:pointer">${i}</a></li>
-		</c:if>
-	</c:forEach>
-	<!-- 3) Next >  ,  Last >>  처리 -->
-	<c:choose>
-		
-		<c:when test="${pageMaker.next && pageMaker.epageNo>0}">
-			<li><a onclick="next_${orderID}()" aria-label="Next"><span aria-hidden="true">»</span></a></li>	
-		</c:when>
-		<c:otherwise>
-			<li class="disabled"><a href="#" aria-label="Next"><span aria-hidden="true">»</span></a></li>	
-		</c:otherwise>
-	</c:choose>	
-	
-	</c:if>
-
-	</ul>
-		<c:if test="${orderID=='random'}">
-
-			<h3><a onclick="cur_${orderID}(${i})"><span class="label label-warning" style="cursor:pointer">새로고침</span></a></h3>
-			<br>
-		</c:if>
-
-	</nav>
-
-</div>
-</c:if>
 
 
 <div>
@@ -343,7 +290,60 @@ error:function() {
 </c:forEach>
 </div>
 
+<c:if test="${messageHome==null}">
+<div class="col-md-12">
 
+<div align="center">
+<nav>			
+	<ul class="pagination">	
+
+	<c:if test="${orderID!='random'}">
+	
+	<c:choose>
+		
+		<c:when test="${pageMaker.prev && pageMaker.spageNo>1}">
+			<li><a onclick="pre_${orderID}()" aria-label="Previous"><span aria-hidden="true">«</span></a></li>				
+		</c:when>
+		<c:otherwise>
+			<li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
+		</c:otherwise>
+	</c:choose>	
+	
+	
+	<!-- 2) sPageNo ~ ePageNo 까지, displayPageNo 만큼 표시 -->
+	<c:forEach var="i" begin="${pageMaker.spageNo}" end="${pageMaker.epageNo}">
+		<c:if test="${i==pageMaker.cri.currPage}">
+			<li class="active"><a href="#">${i}<span class="sr-only">(current)</span></a></li>
+						
+		</c:if>
+		<c:if test="${i!=pageMaker.cri.currPage}">
+			<li><a onclick="cur_${orderID}(${i})" style="cursor:pointer">${i}</a></li>
+		</c:if>
+	</c:forEach>
+	<!-- 3) Next >  ,  Last >>  처리 -->
+	<c:choose>
+		
+		<c:when test="${pageMaker.next && pageMaker.epageNo>0}">
+			<li><a onclick="next_${orderID}()" aria-label="Next"><span aria-hidden="true">»</span></a></li>	
+		</c:when>
+		<c:otherwise>
+			<li class="disabled"><a href="#" aria-label="Next"><span aria-hidden="true">»</span></a></li>	
+		</c:otherwise>
+	</c:choose>	
+	
+	</c:if>
+
+	</ul>
+		<c:if test="${orderID=='random'}">
+
+			<h3><a onclick="cur_${orderID}(${i})"><span class="label label-warning" style="cursor:pointer">새로고침</span></a></h3>
+			<br>
+		</c:if>
+
+	</nav>
+</div>
+</div>
+</c:if>
 
 </body>
 </html>

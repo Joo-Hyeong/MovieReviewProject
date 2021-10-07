@@ -91,7 +91,7 @@
   		
   			select m.* , nvl(rate_avg,0) rate_avg from (select movie.*, row_number() over(order by dbms_random.value)
   		 	rnum from movie) m, (select rating.movie_num, nvl(avg(rate),0) rate_avg from rating group by rating.movie_num) r 
-  		 	where (m.movie_num=r.movie_num(+)) and rnum between #{sno} and #{eno}
+  		 	where (m.movie_num=r.movie_num(+)) and rnum between #{sno} and #{eno} order by rnum desc
   		 	
   		</select>
   		
