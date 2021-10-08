@@ -225,7 +225,9 @@ $(function(){
 	
 	$('.rule').change(function(){
 		
-		if($('#rule1').is(":checked") && $('#rule2').is(":checked") && $('#rule3').is(":checked")){
+		if($('#rule1').is(":checked") && 
+				$('#rule2').is(":checked") &&
+				$('#rule3').is(":checked")){
 			
 				$('#rule4').prop('checked',true);
 				

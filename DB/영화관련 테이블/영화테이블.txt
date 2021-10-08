@@ -1,9 +1,0 @@
-Create table movie(
-movie_num number(4) NOT NULL,
-movie_title VARCHAR2(20) NOT NULL,
-director VARCHAR2(10) NOT NULL,
-release VARCHAR2(10) NOT NULL,
-posterfile VARCHAR2(100) NOT NULL,
-trailer VARCHAR2(200) NOT NULL,
-CONSTRAINT PK_MOVIE primary key(movie_num)
-);

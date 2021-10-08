@@ -69,7 +69,7 @@ function pre_new(){
 		$.ajax({
 		type:"Get",
 		url:"mvlist"+"${pageMaker.searchQuery(pageMaker.spageNo-1)}",
-		data:{orderID:'new'},
+		data:{orderID:'${orderID}'},
 		success:function(resultPage) {
 			
 			$('#new').html(resultPage);
@@ -87,7 +87,7 @@ function cur_new(i){
 	$.ajax({
 	type:"Get",
 	url:"mvlist",
-	data:{orderID:'new',
+	data:{orderID:'${orderID}',
 		currPage:i,
 		rowsPerPage:6
 	},
@@ -107,7 +107,7 @@ function next_new(){
 	$.ajax({
 	type:"Get",
 	url:"mvlist"+"${pageMaker.searchQuery(pageMaker.epageNo+1)}",
-	data:{orderID:'new'},
+	data:{orderID:'${orderID}'},
 	success:function(resultPage) {		
 		$('#new').html(resultPage);
 		},
@@ -124,7 +124,7 @@ function cur_random(){
 	$.ajax({
 	type:"Get",
 	url:"mvlist",
-	data:{orderID:'random',
+	data:{orderID:'${orderID}',
 		currPage:1,
 		rowsPerPage:6
 	},
@@ -146,7 +146,7 @@ function pre_rating(){
 	$.ajax({
 	type:"Get",
 	url:"mvlist"+"${pageMaker.searchQuery(pageMaker.spageNo-1)}",
-	data:{orderID:'rating'},
+	data:{orderID:'${orderID}'},
 	success:function(resultPage) {
 		
 		$('#rating').html(resultPage);
@@ -164,7 +164,7 @@ function cur_rating(i){
 $.ajax({
 type:"Get",
 url:"mvlist",
-data:{orderID:'rating',
+data:{orderID:'${orderID}',
 	currPage:i,
 	rowsPerPage:6
 },
@@ -184,7 +184,7 @@ function next_rating(){
 $.ajax({
 type:"Get",
 url:"mvlist"+"${pageMaker.searchQuery(pageMaker.epageNo+1)}",
-data:{orderID:'rating'},
+data:{orderID:'${orderID}'},
 success:function(resultPage) {		
 	$('#rating').html(resultPage);
 	},
@@ -298,7 +298,7 @@ error:function() {
 	<ul class="pagination">	
 
 	<c:if test="${orderID!='random'}">
-	
+	<!-- 1) Before <<  처리 -->
 	<c:choose>
 		
 		<c:when test="${pageMaker.prev && pageMaker.spageNo>1}">
@@ -320,7 +320,7 @@ error:function() {
 			<li><a onclick="cur_${orderID}(${i})" style="cursor:pointer">${i}</a></li>
 		</c:if>
 	</c:forEach>
-	<!-- 3) Next >  ,  Last >>  처리 -->
+	<!-- 3) Next >>  처리 -->
 	<c:choose>
 		
 		<c:when test="${pageMaker.next && pageMaker.epageNo>0}">

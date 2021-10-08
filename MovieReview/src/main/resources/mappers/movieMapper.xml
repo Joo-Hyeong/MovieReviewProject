@@ -81,7 +81,8 @@
   		<![CDATA[
   			
 			select m.*, nvl(rate_avg,0) rate_avg from (select movie.*, row_number() over(order by release)
-  		 	rnum from movie where sysdate-to_date(release,'YYYY/MM/DD')<30) m, (select rating.movie_num, nvl(avg(rate),0) rate_avg from rating group by rating.movie_num) r  
+  		 	rnum from movie where sysdate-to_date(release,'YYYY/MM/DD')<30) m, 
+  		 	(select rating.movie_num, nvl(avg(rate),0) rate_avg from rating group by rating.movie_num) r  
   			where (m.movie_num=r.movie_num(+)) and rnum between #{sno} and #{eno}
   			
   			]]>
@@ -89,8 +90,9 @@
   		
    		<select id="pageListRandom" resultType="VO.MovieVO">
   		
-  			select m.* , nvl(rate_avg,0) rate_avg from (select movie.*, row_number() over(order by dbms_random.value)
-  		 	rnum from movie) m, (select rating.movie_num, nvl(avg(rate),0) rate_avg from rating group by rating.movie_num) r 
+  			select m.* , nvl(rate_avg,0) rate_avg from 
+  			(select movie.*, row_number() over(order by dbms_random.value) rnum from movie) m, 
+  			(select rating.movie_num, nvl(avg(rate),0) rate_avg from rating group by rating.movie_num) r 
   		 	where (m.movie_num=r.movie_num(+)) and rnum between #{sno} and #{eno} order by rnum desc
   		 	
   		</select>
@@ -98,7 +100,8 @@
   		<select id="pageListRate" resultType="VO.MovieVO">
   		
 			select m.*, rate_avg from (select movie.* from movie) m, 
-			(select rating.movie_num, nvl(avg(rate),0) rate_avg, row_number() over(order by nvl(avg(rate),0) desc) rnum from rating group by rating.movie_num) r
+			(select rating.movie_num, nvl(avg(rate),0) rate_avg, 
+			row_number() over(order by nvl(avg(rate),0) desc) rnum from rating group by rating.movie_num) r
   			where (m.movie_num=r.movie_num) and rnum between #{sno} and #{eno}
   			
   		</select>

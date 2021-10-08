@@ -1,0 +1,10 @@
+create table wish(
+id VARCHAR2(10) NOT NULL,
+movie_num number(4) NOT NULL,
+CONSTRAINT FK1_WISH FOREIGN KEY(id) REFERENCES member(id),
+CONSTRAINT FK2_WISH FOREIGN KEY(movie_num) REFERENCES movie(movie_num),
+CONSTRAINT PK_WISH primary key(id, movie_num)
+);
+
+insert into wish values( 'apple' , 1 );
+insert into wish values( 'apple' , 2 );
